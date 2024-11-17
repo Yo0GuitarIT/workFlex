@@ -12,12 +12,15 @@ import {
   Dialog,
   Card,
   Separator,
+  DropdownMenu,
+  Badge,
 } from "@radix-ui/themes";
 import {
   ArrowLeftIcon,
   ArrowRightIcon,
   CameraIcon,
   ClockIcon,
+  DoubleArrowDownIcon,
   PersonIcon,
 } from "@radix-ui/react-icons";
 import { useState } from "react";
@@ -50,7 +53,18 @@ function App() {
               today.getMonth() + 1
             }-${today.getDate()}`}</Heading>
 
-            <Text>補休剩餘時間 0 天</Text>
+            <DropdownMenu.Root>
+              <DropdownMenu.Trigger>
+                <IconButton>
+                  <DoubleArrowDownIcon />
+                </IconButton>
+              </DropdownMenu.Trigger>
+              <DropdownMenu.Content>
+                <Text>Hi,佳佳 🕊</Text>
+                <DropdownMenu.Separator />
+                <DropdownMenu.Item shortcut="⏎">登出</DropdownMenu.Item>
+              </DropdownMenu.Content>
+            </DropdownMenu.Root>
           </Flex>
         </Box>
 
@@ -78,7 +92,7 @@ function App() {
               ))}
             </Grid>
           </Box>
-          <Grid columns="7" rows="5" gap="2">
+          <Grid columns="7" rows="5" gap="1">
             {Array.from({ length: 35 }).map((_, i) => {
               const day = i - firstDay + 1;
               const isToday =
@@ -90,7 +104,7 @@ function App() {
                   key={i}
                   p="1"
                   style={{
-                    backgroundColor: "var(--blue-2)",
+                    backgroundColor: "var(--gray-1)",
                     aspectRatio: "1",
                   }}
                 >
@@ -98,21 +112,23 @@ function App() {
                     <>
                       <Dialog.Root>
                         <Dialog.Trigger>
-                          <Box
-                            width="100%"
-                            height="100%"
-                            onClick={() => {
-                              console.log("click");
-                            }}
-                          >
-                            <Avatar
-                              size="2"
-                              color={isToday ? "red" : "indigo"}
-                              radius="full"
-                              fallback={
-                                day > 0 && day <= daysInMonth ? day : ""
-                              }
-                            />
+                          <Box width="100%" height="100%">
+                            <Flex direction="column" justify="center">
+                              {isToday ? (
+                                <Avatar
+                                  size="1"
+                                  fallback={
+                                    day > 0 && day <= daysInMonth ? day : ""
+                                  }
+                                />
+                              ) : (
+                                <>
+                                  <Text>
+                                    {day > 0 && day <= daysInMonth ? day : ""}
+                                  </Text>
+                                </>
+                              )}
+                            </Flex>
                           </Box>
                         </Dialog.Trigger>
 
@@ -153,7 +169,7 @@ function App() {
                 <Flex align="center" gap="2">
                   <PersonIcon />
                   <Text size="2" color="gray">
-                    整天
+                    佳佳・整天
                   </Text>
                 </Flex>
               </Flex>
@@ -181,7 +197,7 @@ function App() {
                 <Flex align="center" gap="2">
                   <PersonIcon />
                   <Text size="2" color="gray">
-                   下半天
+                    佳佳・下半天
                   </Text>
                 </Flex>
               </Flex>
