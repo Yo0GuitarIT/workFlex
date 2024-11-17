@@ -16,7 +16,7 @@ export const MockData: CalendarEvent[] = [
     userName: "佳佳",
     date: "2024-11-17", // 加班日
     type: EventTypeEnum.OVERTIME,
-    duration: DurationEnum.HALF_DAY,
+    duration: DurationEnum.HALF_DAY_AFTERNOON,
   },
   {
     id: "3",
@@ -24,7 +24,7 @@ export const MockData: CalendarEvent[] = [
     userName: "佳佳",
     date: "2024-11-20", // 補休日
     type: EventTypeEnum.COMPENSATORY,
-    duration: DurationEnum.HALF_DAY,
+    duration: DurationEnum.HALF_DAY_MORNING,
   },
   {
     id: "4",
@@ -40,6 +40,6 @@ export const MockData: CalendarEvent[] = [
     userName: "佳佳",
     date: "2024-11-24", // 補休日
     type: EventTypeEnum.COMPENSATORY,
-    duration: DurationEnum.FULL_DAY,
+    duration: DurationEnum.HALF_DAY_AFTERNOON,
   }
 ];

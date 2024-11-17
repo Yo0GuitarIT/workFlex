@@ -25,8 +25,9 @@ import {
 import { useState } from "react";
 import EventIndicator from "./components/EventIndicator";
 import { MockData } from "./mockData";
-import { EventTypeEnum } from "./types/enums";
+import { DurationEnum, EventTypeEnum } from "./types/enums";
 import { CalendarEvent } from "./types/interfaces";
+import RecordCard from "./components/RecordCard";
 
 function App() {
   const [currentDate, setCurrentDate] = useState(new Date());
@@ -197,7 +198,7 @@ function App() {
               <Box
                 style={{
                   borderRadius: "0.5rem",
-                  backgroundColor: "var(--green-4)",
+                  backgroundColor: "var(--red-4)",
                   width: "2rem",
                   height: "2rem",
                   display: "flex",
@@ -225,7 +226,7 @@ function App() {
               <Box
                 style={{
                   borderRadius: "0.5rem",
-                  backgroundColor: "var(--orange-4)",
+                  backgroundColor: "var(--green-4)",
                   width: "2rem",
                   height: "2rem",
                   display: "flex",
@@ -247,6 +248,13 @@ function App() {
               </Flex>
             </Flex>
           </Card>
+
+          <RecordCard
+            userName="佳佳"
+            date="2024-11-24"
+            type={EventTypeEnum.OVERTIME}
+            duration={DurationEnum.HALF_DAY_MORNING}
+          />
         </Flex>
       </Container>
     </Theme>
