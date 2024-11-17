@@ -26,6 +26,7 @@ import { useState } from "react";
 import EventIndicator from "./components/EventIndicator";
 import { MockData } from "./mockData";
 import { EventTypeEnum } from "./types/enums";
+import { CalendarEvent } from "./types/interfaces";
 
 function App() {
   const [currentDate, setCurrentDate] = useState(new Date());
@@ -38,19 +39,39 @@ function App() {
 
   const weeks = ["Sun.", "Mon.", "Tue.", "Wed.", "Thu.", "Fri.", "Sat."];
 
-  const handlePrevMonth = () => {
+  /**
+   * 切換至上個月
+   * @returns {void}
+   */
+  const handlePrevMonth = (): void => {
     setCurrentDate(new Date(year, month - 1, 1));
   };
 
-  const handleNextMonth = () => {
+  /**
+   * 切換至下個月
+   * @returns {void}
+   */
+  const handleNextMonth = (): void => {
     setCurrentDate(new Date(year, month + 1, 1));
   };
 
-  const getEventsForData = (date: string) => {
+  /**
+   * 取得指定日期的事件
+   * @param {string} date
+   * @returns {CalendarEvent[]}
+   */
+  const getEventsForData = (date: string): CalendarEvent[] => {
     return MockData.filter((event) => event.date === date);
   };
 
-  const formatDate = (year: number, month: number, day: number) => {
+  /**
+   * 格式化日期
+   * @param {number} year
+   * @param {number} month
+   * @param {number} day
+   * @returns {string}
+   */
+  const formatDate = (year: number, month: number, day: number): string => {
     return `${year}-${String(month + 1).padStart(2, "0")}-${String(day).padStart(2, "0")}`;
   };
 
