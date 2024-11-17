@@ -24,6 +24,7 @@ import {
 } from "@radix-ui/react-icons";
 import { useState } from "react";
 import EventIndicator from "./components/EventIndicator";
+import { MockData } from "./mockData";
 
 function App() {
   const [currentDate, setCurrentDate] = useState(new Date());
@@ -42,6 +43,15 @@ function App() {
 
   const handleNextMonth = () => {
     setCurrentDate(new Date(year, month + 1, 1));
+  };
+
+  const getEventsForData = (date: string) => {
+    console.log(date);
+    return MockData.filter((event) => event.date === date);
+  };
+
+  const formatDate = (year: number, month: number, day: number) => {
+    return `${year}-${String(month + 1).padStart(2, "0")}-${String(day).padStart(2, "0")}`;
   };
 
   return (
@@ -94,6 +104,8 @@ function App() {
             {Array.from({ length: 35 }).map((_, i) => {
               const day = i - firstDay + 1;
               const isToday = day === today.getDate() && month === today.getMonth() && year === today.getFullYear();
+              const currentDate = formatDate(year, month, day);
+              const dayEvents = getEventsForData(currentDate);
               return (
                 <Box
                   key={i}
@@ -110,14 +122,22 @@ function App() {
                           <Box width="100%" height="100%">
                             <Flex direction="column" justify="center">
                               {isToday ? (
-                                <Avatar size="1" fallback={day > 0 && day <= daysInMonth ? day : ""} />
+                                <>
+                                  <Avatar size="1" fallback={day.toString()} />
+                                  {dayEvents.length > 0 && (
+                                    <Flex>
+                                      <EventIndicator color="green" />
+                                    </Flex>
+                                  )}
+                                </>
                               ) : (
                                 <>
-                                  <Text>{day > 0 && day <= daysInMonth ? day : ""}</Text>
-                                  <Flex>
-                                    <EventIndicator color="green" />
-                                    <EventIndicator color="blue" />
-                                  </Flex>
+                                  <Text>{day}</Text>
+                                  {dayEvents.length > 0 && (
+                                    <Flex>
+                                      <EventIndicator color="green" />
+                                    </Flex>
+                                  )}
                                 </>
                               )}
                             </Flex>
