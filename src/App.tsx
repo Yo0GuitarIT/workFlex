@@ -25,6 +25,7 @@ import {
 import { useState } from "react";
 import EventIndicator from "./components/EventIndicator";
 import { MockData } from "./mockData";
+import { EventTypeEnum } from "./types/enums";
 
 function App() {
   const [currentDate, setCurrentDate] = useState(new Date());
@@ -46,7 +47,6 @@ function App() {
   };
 
   const getEventsForData = (date: string) => {
-    console.log(date);
     return MockData.filter((event) => event.date === date);
   };
 
@@ -135,7 +135,13 @@ function App() {
                                   <Text>{day}</Text>
                                   {dayEvents.length > 0 && (
                                     <Flex>
-                                      <EventIndicator color="green" />
+                                      {dayEvents.map((event) => (
+                                        //todo: 未來拓展多人同天事件
+                                        <EventIndicator
+                                          key={event.id}
+                                          color={event.type === EventTypeEnum.OVERTIME ? "red" : "green"}
+                                        />
+                                      ))}
                                     </Flex>
                                   )}
                                 </>

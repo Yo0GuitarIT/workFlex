@@ -2,7 +2,7 @@ import { Box } from "@radix-ui/themes";
 
 enum IndicatorEnum {
   green = "var(--green-9)",
-  blue = "var(--blue-9)",
+  red = "var(--red-9)",
 }
 
 interface IndicatorProps {
