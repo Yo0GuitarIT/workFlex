@@ -13,7 +13,6 @@ import {
   Card,
   Separator,
   DropdownMenu,
-  Badge,
 } from "@radix-ui/themes";
 import {
   ArrowLeftIcon,
@@ -24,6 +23,7 @@ import {
   PersonIcon,
 } from "@radix-ui/react-icons";
 import { useState } from "react";
+import EventIndicator from "./components/EventIndicator";
 
 function App() {
   const [currentDate, setCurrentDate] = useState(new Date());
@@ -49,9 +49,7 @@ function App() {
       <Container size="1">
         <Box p="2" mb="2" style={{ backgroundColor: "var(--blue-5)" }}>
           <Flex justify="between" align="center" gap="2">
-            <Heading>{`${today.getFullYear()}-${
-              today.getMonth() + 1
-            }-${today.getDate()}`}</Heading>
+            <Heading>{`${today.getFullYear()}-${today.getMonth() + 1}-${today.getDate()}`}</Heading>
 
             <DropdownMenu.Root>
               <DropdownMenu.Trigger>
@@ -95,10 +93,7 @@ function App() {
           <Grid columns="7" rows="5" gap="1">
             {Array.from({ length: 35 }).map((_, i) => {
               const day = i - firstDay + 1;
-              const isToday =
-                day === today.getDate() &&
-                month === today.getMonth() &&
-                year === today.getFullYear();
+              const isToday = day === today.getDate() && month === today.getMonth() && year === today.getFullYear();
               return (
                 <Box
                   key={i}
@@ -115,17 +110,14 @@ function App() {
                           <Box width="100%" height="100%">
                             <Flex direction="column" justify="center">
                               {isToday ? (
-                                <Avatar
-                                  size="1"
-                                  fallback={
-                                    day > 0 && day <= daysInMonth ? day : ""
-                                  }
-                                />
+                                <Avatar size="1" fallback={day > 0 && day <= daysInMonth ? day : ""} />
                               ) : (
                                 <>
-                                  <Text>
-                                    {day > 0 && day <= daysInMonth ? day : ""}
-                                  </Text>
+                                  <Text>{day > 0 && day <= daysInMonth ? day : ""}</Text>
+                                  <Flex>
+                                    <EventIndicator color="green" />
+                                    <EventIndicator color="blue" />
+                                  </Flex>
                                 </>
                               )}
                             </Flex>
@@ -133,10 +125,15 @@ function App() {
                         </Dialog.Trigger>
 
                         <Dialog.Content>
-                          <Dialog.Title>編輯</Dialog.Title>
+                          <Dialog.Title>當日補修加班狀況</Dialog.Title>
                           <Dialog.Description size="2" mb="4">
-                            Make changes to your profile.
+                            加班
                           </Dialog.Description>
+                          <Text>
+                            Lorem ipsum dolor sit amet consectetur adipisicing elit. Nihil accusamus veritatis
+                            aspernatur assumenda exercitationem eligendi vel cum velit alias sit nam architecto, nostrum
+                            consectetur nulla deserunt voluptas commodi aliquam maiores.
+                          </Text>
                         </Dialog.Content>
                       </Dialog.Root>
                     </>
