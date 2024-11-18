@@ -13,6 +13,8 @@ import {
   Card,
   Separator,
   DropdownMenu,
+  Badge,
+  Button,
 } from "@radix-ui/themes";
 import {
   ArrowLeftIcon,
@@ -20,14 +22,15 @@ import {
   CameraIcon,
   ClockIcon,
   DoubleArrowDownIcon,
+  EraserIcon,
+  Pencil1Icon,
   PersonIcon,
 } from "@radix-ui/react-icons";
 import { useState } from "react";
 import EventIndicator from "./components/EventIndicator";
 import { MockData } from "./mockData";
-import { DurationEnum, EventTypeEnum } from "./types/enums";
+import { EventTypeEnum } from "./types/enums";
 import { CalendarEvent } from "./types/interfaces";
-import RecordCard from "./components/RecordCard";
 
 function App() {
   const [currentDate, setCurrentDate] = useState(new Date());
@@ -173,15 +176,25 @@ function App() {
                         </Dialog.Trigger>
 
                         <Dialog.Content>
-                          <Dialog.Title>當日補修加班狀況</Dialog.Title>
-                          <Dialog.Description size="2" mb="4">
-                            加班
-                          </Dialog.Description>
+                          <Dialog.Title>當日補休加班狀況</Dialog.Title>
+                          <Dialog.Description size="3">加班</Dialog.Description>
                           <Text>
                             Lorem ipsum dolor sit amet consectetur adipisicing elit. Nihil accusamus veritatis
                             aspernatur assumenda exercitationem eligendi vel cum velit alias sit nam architecto, nostrum
                             consectetur nulla deserunt voluptas commodi aliquam maiores.
                           </Text>
+                          <Dialog.Description size="3">補休</Dialog.Description>
+                          <Text>
+                            Lorem ipsum dolor sit amet consectetur adipisicing elit. Nihil accusamus veritatis
+                            aspernatur assumenda exercitationem eligendi vel cum velit alias sit nam architecto, nostrum
+                            consectetur nulla deserunt voluptas commodi aliquam maiores.
+                          </Text>
+
+                          <Dialog.Close>
+                            <Button variant="soft" color="gray">
+                              關閉
+                            </Button>
+                          </Dialog.Close>
                         </Dialog.Content>
                       </Dialog.Root>
                     </>
@@ -194,67 +207,60 @@ function App() {
         <Flex my="2" gap="2" direction="column">
           <Heading>本月紀錄</Heading>
           <Card>
-            <Flex gap="3" align="center">
-              <Box
-                style={{
-                  borderRadius: "0.5rem",
-                  backgroundColor: "var(--red-4)",
-                  width: "2rem",
-                  height: "2rem",
-                  display: "flex",
-                  justifyContent: "center",
-                  alignItems: "center",
-                }}
-              >
-                <ClockIcon />
-              </Box>
-              <Separator orientation="vertical" size="3" />
-              <Flex direction="column">
-                <Text>11/17 加班</Text>
-                <Flex align="center" gap="2">
-                  <PersonIcon />
-                  <Text size="2" color="gray">
-                    佳佳・整天
-                  </Text>
+            <Flex align="center" justify="between">
+              <Flex align="center" gap="2">
+                <Badge size="2" color="red">
+                  <ClockIcon />
+                </Badge>
+                <Separator orientation="vertical" size="3" />
+                <Flex direction="column">
+                  <Text>11/17 加班</Text>
+                  <Flex align="center" gap="2">
+                    <PersonIcon />
+                    <Text size="2" color="gray">
+                      佳佳・整天
+                    </Text>
+                  </Flex>
                 </Flex>
+              </Flex>
+              <Flex gap="2">
+                <IconButton color="orange" variant="surface">
+                  <Pencil1Icon />
+                </IconButton>
+                <IconButton color="red" variant="surface">
+                  <EraserIcon />
+                </IconButton>
               </Flex>
             </Flex>
           </Card>
 
           <Card>
-            <Flex gap="3" align="center">
-              <Box
-                style={{
-                  borderRadius: "0.5rem",
-                  backgroundColor: "var(--green-4)",
-                  width: "2rem",
-                  height: "2rem",
-                  display: "flex",
-                  justifyContent: "center",
-                  alignItems: "center",
-                }}
-              >
-                <CameraIcon />
-              </Box>
-              <Separator orientation="vertical" size="3" />
-              <Flex direction="column">
-                <Text>11/20 補修</Text>
-                <Flex align="center" gap="2">
-                  <PersonIcon />
-                  <Text size="2" color="gray">
-                    佳佳・下半天
-                  </Text>
+            <Flex align="center" justify="between">
+              <Flex align="center" gap="2">
+                <Badge size="2" color="green">
+                  <CameraIcon />
+                </Badge>
+                <Separator orientation="vertical" size="3" />
+                <Flex direction="column">
+                  <Text>11/20 休假</Text>
+                  <Flex align="center" gap="2">
+                    <PersonIcon />
+                    <Text size="2" color="gray">
+                      佳佳・整天
+                    </Text>
+                  </Flex>
                 </Flex>
+              </Flex>
+              <Flex gap="2">
+                <IconButton color="orange" variant="surface">
+                  <Pencil1Icon />
+                </IconButton>
+                <IconButton color="red" variant="surface">
+                  <EraserIcon />
+                </IconButton>
               </Flex>
             </Flex>
           </Card>
-
-          <RecordCard
-            userName="佳佳"
-            date="2024-11-24"
-            type={EventTypeEnum.OVERTIME}
-            duration={DurationEnum.HALF_DAY_MORNING}
-          />
         </Flex>
       </Container>
     </Theme>
