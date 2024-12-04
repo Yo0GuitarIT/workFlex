@@ -28,9 +28,9 @@ import {
 } from "@radix-ui/react-icons";
 import { useState } from "react";
 import EventIndicator from "./components/EventIndicator";
-import { MockData } from "./mockData";
+import { MockUserRecords } from "./mockData";
 import { EventTypeEnum } from "./types/enums";
-import { CalendarEvent } from "./types/interfaces";
+import { UserRecord } from "./types/interfaces";
 
 function App() {
   const [currentDate, setCurrentDate] = useState(new Date());
@@ -62,10 +62,10 @@ function App() {
   /**
    * 取得指定日期的事件
    * @param {string} date
-   * @returns {CalendarEvent[]}
+   * @returns {UserRecord[]}
    */
-  const getEventsForData = (date: string): CalendarEvent[] => {
-    return MockData.filter((event) => event.date === date);
+  const getEventsForData = (date: string): UserRecord[] => {
+    return MockUserRecords.filter((event) => event.date === date);
   };
 
   /**
@@ -76,7 +76,9 @@ function App() {
    * @returns {string}
    */
   const formatDate = (year: number, month: number, day: number): string => {
-    return `${year}-${String(month + 1).padStart(2, "0")}-${String(day).padStart(2, "0")}`;
+    return `${year}-${String(month + 1).padStart(2, "0")}-${String(
+      day
+    ).padStart(2, "0")}`;
   };
 
   return (
@@ -84,7 +86,9 @@ function App() {
       <Container size="1">
         <Box p="2" mb="2" style={{ backgroundColor: "var(--blue-5)" }}>
           <Flex justify="between" align="center" gap="2">
-            <Heading>{`${today.getFullYear()}-${today.getMonth() + 1}-${today.getDate()}`}</Heading>
+            <Heading>{`${today.getFullYear()}-${
+              today.getMonth() + 1
+            }-${today.getDate()}`}</Heading>
 
             <DropdownMenu.Root>
               <DropdownMenu.Trigger>
@@ -128,7 +132,10 @@ function App() {
           <Grid columns="7" rows="5" gap="1">
             {Array.from({ length: 35 }).map((_, i) => {
               const day = i - firstDay + 1;
-              const isToday = day === today.getDate() && month === today.getMonth() && year === today.getFullYear();
+              const isToday =
+                day === today.getDate() &&
+                month === today.getMonth() &&
+                year === today.getFullYear();
               const currentDate = formatDate(year, month, day);
               const dayEvents = getEventsForData(currentDate);
               return (
@@ -164,7 +171,12 @@ function App() {
                                         //todo: 未來拓展多人同天事件
                                         <EventIndicator
                                           key={event.id}
-                                          color={event.type === EventTypeEnum.OVERTIME ? "red" : "green"}
+                                          color={
+                                            event.records ===
+                                            EventTypeEnum.OVERTIME
+                                              ? "red"
+                                              : "green"
+                                          }
                                         />
                                       ))}
                                     </Flex>
@@ -179,15 +191,19 @@ function App() {
                           <Dialog.Title>當日補休加班狀況</Dialog.Title>
                           <Dialog.Description size="3">加班</Dialog.Description>
                           <Text>
-                            Lorem ipsum dolor sit amet consectetur adipisicing elit. Nihil accusamus veritatis
-                            aspernatur assumenda exercitationem eligendi vel cum velit alias sit nam architecto, nostrum
-                            consectetur nulla deserunt voluptas commodi aliquam maiores.
+                            Lorem ipsum dolor sit amet consectetur adipisicing
+                            elit. Nihil accusamus veritatis aspernatur assumenda
+                            exercitationem eligendi vel cum velit alias sit nam
+                            architecto, nostrum consectetur nulla deserunt
+                            voluptas commodi aliquam maiores.
                           </Text>
                           <Dialog.Description size="3">補休</Dialog.Description>
                           <Text>
-                            Lorem ipsum dolor sit amet consectetur adipisicing elit. Nihil accusamus veritatis
-                            aspernatur assumenda exercitationem eligendi vel cum velit alias sit nam architecto, nostrum
-                            consectetur nulla deserunt voluptas commodi aliquam maiores.
+                            Lorem ipsum dolor sit amet consectetur adipisicing
+                            elit. Nihil accusamus veritatis aspernatur assumenda
+                            exercitationem eligendi vel cum velit alias sit nam
+                            architecto, nostrum consectetur nulla deserunt
+                            voluptas commodi aliquam maiores.
                           </Text>
 
                           <Dialog.Close>
@@ -206,61 +222,52 @@ function App() {
         </Box>
         <Flex my="2" gap="2" direction="column">
           <Heading>本月紀錄</Heading>
-          <Card>
-            <Flex align="center" justify="between">
-              <Flex align="center" gap="2">
-                <Badge size="2" color="red">
-                  <ClockIcon />
-                </Badge>
-                <Separator orientation="vertical" size="3" />
-                <Flex direction="column">
-                  <Text>11/17 加班</Text>
-                  <Flex align="center" gap="2">
-                    <PersonIcon />
-                    <Text size="2" color="gray">
-                      佳佳・整天
+          {MockUserRecords.map((record) => (
+            <Card key={record.id}>
+              <Flex align="center" justify="between">
+                <Flex align="center" gap="2">
+                  <Badge
+                    size="2"
+                    color={
+                      record.records === EventTypeEnum.OVERTIME
+                        ? "blue"
+                        : "green"
+                    }
+                  >
+                    {record.records === EventTypeEnum.OVERTIME ? (
+                      <ClockIcon />
+                    ) : (
+                      <CameraIcon />
+                    )}
+                  </Badge>
+                  <Separator orientation="vertical" size="3" />
+                  <Flex direction="column">
+                    <Text>
+                      {record.date.split("-")[1]}/{record.date.split("-")[2]}
+                      {record.records === EventTypeEnum.OVERTIME
+                        ? "加班"
+                        : "補休"}
                     </Text>
+                    <Flex align="center" gap="2">
+                      <PersonIcon />
+                      <Text size="2" color="gray">
+                        {record.name}・{record.timeRange.start}~
+                        {record.timeRange.end}・{record.hours}小時
+                      </Text>
+                    </Flex>
                   </Flex>
                 </Flex>
-              </Flex>
-              <Flex gap="2">
-                <IconButton color="orange" variant="surface">
-                  <Pencil1Icon />
-                </IconButton>
-                <IconButton color="red" variant="surface">
-                  <EraserIcon />
-                </IconButton>
-              </Flex>
-            </Flex>
-          </Card>
-
-          <Card>
-            <Flex align="center" justify="between">
-              <Flex align="center" gap="2">
-                <Badge size="2" color="green">
-                  <CameraIcon />
-                </Badge>
-                <Separator orientation="vertical" size="3" />
-                <Flex direction="column">
-                  <Text>11/20 休假</Text>
-                  <Flex align="center" gap="2">
-                    <PersonIcon />
-                    <Text size="2" color="gray">
-                      佳佳・整天
-                    </Text>
-                  </Flex>
+                <Flex gap="2">
+                  <IconButton color="orange" variant="surface">
+                    <Pencil1Icon />
+                  </IconButton>
+                  <IconButton color="red" variant="surface">
+                    <EraserIcon />
+                  </IconButton>
                 </Flex>
               </Flex>
-              <Flex gap="2">
-                <IconButton color="orange" variant="surface">
-                  <Pencil1Icon />
-                </IconButton>
-                <IconButton color="red" variant="surface">
-                  <EraserIcon />
-                </IconButton>
-              </Flex>
-            </Flex>
-          </Card>
+            </Card>
+          ))}
         </Flex>
       </Container>
     </Theme>

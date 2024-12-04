@@ -1,10 +1,22 @@
-import { DurationEnum, EventTypeEnum } from "./enums";
+import { EventTypeEnum } from "./enums";
 
-export interface CalendarEvent {
+/**
+ * 時間範圍
+ */
+export interface TimeRange {
+  start: string; // HH:mm
+  end: string; // HH:mm
+}
+
+/**
+ * 使用者紀錄
+ */
+export interface UserRecord {
   id: string;
-  userId: string;
-  userName: string;
+  name: string;
+  records: EventTypeEnum;
   date: string; // YYYY-MM-DD
-  type: EventTypeEnum;
-  duration: DurationEnum;
+  timeRange: TimeRange;
+  hours: number;
+  createdAt: string; // YYYY-MM-DD HH:mm:ss
 }

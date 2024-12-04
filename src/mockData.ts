@@ -1,45 +1,65 @@
-import { DurationEnum, EventTypeEnum } from "./types/enums";
-import { CalendarEvent } from "./types/interfaces";
+import { EventTypeEnum } from "./types/enums";
+import { UserRecord } from "./types/interfaces";
 
-export const MockData: CalendarEvent[] = [
+export const MockUserRecords: UserRecord[] = [
   {
     id: "1",
-    userId: "001",
-    userName: "佳佳",
-    date: "2024-11-09", // 加班日
-    type: EventTypeEnum.OVERTIME,
-    duration: DurationEnum.FULL_DAY,
+    name: "佳佳",
+    records: EventTypeEnum.OVERTIME,
+    date: "2024-12-09",
+    timeRange: {
+      start: "09:00",
+      end: "18:00",
+    },
+    hours: 9,
+    createdAt: "2024-12-09 18:00:00",
   },
   {
     id: "2",
-    userId: "001",
-    userName: "佳佳",
-    date: "2024-11-17", // 加班日
-    type: EventTypeEnum.OVERTIME,
-    duration: DurationEnum.HALF_DAY_AFTERNOON,
+    name: "佳佳",
+    records: EventTypeEnum.OVERTIME,
+    date: "2024-12-17",
+    timeRange: {
+      start: "13:00",
+      end: "18:00",
+    },
+    hours: 5,
+    createdAt: "2024-12-17 18:00:00",
   },
   {
     id: "3",
-    userId: "001",
-    userName: "佳佳",
-    date: "2024-11-20", // 補休日
-    type: EventTypeEnum.COMPENSATORY,
-    duration: DurationEnum.HALF_DAY_MORNING,
+    name: "佳佳",
+    records: EventTypeEnum.COMPENSATORY,
+    date: "2024-12-20",
+    timeRange: {
+      start: "09:00",
+      end: "12:00",
+    },
+    hours: 3,
+    createdAt: "2024-12-20 12:00:00",
   },
   {
     id: "4",
-    userId: "001",
-    userName: "佳佳",
-    date: "2024-11-23", //  加班日
-    type: EventTypeEnum.OVERTIME,
-    duration: DurationEnum.FULL_DAY,
+    name: "佳佳",
+    records: EventTypeEnum.OVERTIME,
+    date: "2024-12-23",
+    timeRange: {
+      start: "09:00",
+      end: "18:00",
+    },
+    hours: 9,
+    createdAt: "2024-12-23 18:00:00",
   },
   {
     id: "5",
-    userId: "001",
-    userName: "佳佳",
-    date: "2024-11-24", // 補休日
-    type: EventTypeEnum.COMPENSATORY,
-    duration: DurationEnum.HALF_DAY_AFTERNOON,
-  }
+    name: "佳佳",
+    records: EventTypeEnum.COMPENSATORY,
+    date: "2024-12-24",
+    timeRange: {
+      start: "13:00",
+      end: "18:00",
+    },
+    hours: 5,
+    createdAt: "2024-12-24 18:00:00",
+  },
 ];
