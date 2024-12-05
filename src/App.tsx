@@ -15,6 +15,8 @@ import {
   DropdownMenu,
   Badge,
   Button,
+  TextField,
+  SegmentedControl,
 } from "@radix-ui/themes";
 import {
   ArrowLeftIcon,
@@ -259,7 +261,75 @@ function App() {
                 </Flex>
                 <Flex gap="2">
                   <IconButton color="orange" variant="surface">
-                    <Pencil1Icon />
+                    <Dialog.Root>
+                      <Dialog.Trigger>
+                        <Pencil1Icon />
+                      </Dialog.Trigger>
+                      <Dialog.Content>
+                        <Dialog.Title>編輯</Dialog.Title>
+                        <Dialog.Description size="3">
+                          調整您的加班補修狀況
+                        </Dialog.Description>
+                        <Flex direction="column" gap="2">
+                          <label>
+                            <Text as="div" size="2" mb="1" weight="bold">
+                              類型
+                            </Text>
+                            <SegmentedControl.Root
+                              defaultValue={record.records}
+                            >
+                              <SegmentedControl.Item
+                                value={EventTypeEnum.OVERTIME}
+                              >
+                                加班
+                              </SegmentedControl.Item>
+                              <SegmentedControl.Item
+                                value={EventTypeEnum.COMPENSATORY}
+                              >
+                                補休
+                              </SegmentedControl.Item>
+                            </SegmentedControl.Root>
+                          </label>
+                          <label>
+                            <Text as="div" size="2" mb="1" weight="bold">
+                              日期
+                            </Text>
+                            <TextField.Root
+                              defaultValue={record.date}
+                              placeholder="輸入您的日期"
+                            />
+                          </label>
+                          <label>
+                            <Text as="div" size="2" mb="1" weight="bold">
+                              開始時間
+                            </Text>
+                            <TextField.Root
+                              defaultValue={record.timeRange.start}
+                              placeholder="輸入您的開始時間"
+                            />
+                          </label>
+                          <label>
+                            <Text as="div" size="2" mb="1" weight="bold">
+                              結束時間
+                            </Text>
+                            <TextField.Root
+                              defaultValue={record.timeRange.end}
+                              placeholder="輸入您的結束時間"
+                            />
+                          </label>
+                        </Flex>
+                        <Flex gap="3" mt="4" justify="end">
+                          <Dialog.Close>
+                            <Button variant="soft">儲存</Button>
+                          </Dialog.Close>
+                          <Dialog.Close>
+                            <Button variant="soft" color="gray">
+                              取消
+                            </Button>
+                          </Dialog.Close>
+                        </Flex>
+                      </Dialog.Content>
+                    </Dialog.Root>
                   </IconButton>
                   <IconButton color="red" variant="surface">
                     <EraserIcon />
