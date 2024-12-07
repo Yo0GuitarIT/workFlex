@@ -11,7 +11,6 @@ import {
   Avatar,
   Card,
   Separator,
-  DropdownMenu,
   Badge,
   Button,
   TextField,
@@ -35,8 +34,17 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-  DialogClose
-} from "@/components/ui/dialog"
+  DialogClose,
+} from "@/components/ui/dialog";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu"
+
 
 import { useState } from "react";
 import EventIndicator from "./components/EventIndicator";
@@ -89,7 +97,7 @@ function App() {
    */
   const formatDate = (year: number, month: number, day: number): string => {
     return `${year}-${String(month + 1).padStart(2, "0")}-${String(
-      day
+      day,
     ).padStart(2, "0")}`;
   };
 
@@ -102,18 +110,19 @@ function App() {
               today.getMonth() + 1
             }-${today.getDate()}`}</Heading>
 
-            <DropdownMenu.Root>
-              <DropdownMenu.Trigger>
+            <DropdownMenu>
+              <DropdownMenuTrigger>
                 <IconButton>
                   <DoubleArrowDownIcon />
                 </IconButton>
-              </DropdownMenu.Trigger>
-              <DropdownMenu.Content>
-                <Text>Hi,佳佳 🕊</Text>
-                <DropdownMenu.Separator />
-                <DropdownMenu.Item shortcut="⏎">登出</DropdownMenu.Item>
-              </DropdownMenu.Content>
-            </DropdownMenu.Root>
+              </DropdownMenuTrigger>
+
+              <DropdownMenuContent>
+                <DropdownMenuLabel>Hi,佳佳 🕊</DropdownMenuLabel>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem>登出</DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
           </Flex>
         </Box>
 
@@ -200,15 +209,15 @@ function App() {
                         </DialogTrigger>
 
                         <DialogContent>
-    <DialogHeader>
-      <DialogTitle>Are you absolutely sure?</DialogTitle>
-      <DialogDescription>
-        This action cannot be undone. This will permanently delete your account
-        and remove your data from our servers.
-      </DialogDescription>
-    </DialogHeader>
-  </DialogContent>
-                         
+                          <DialogHeader>
+                            <DialogTitle>Are you absolutely sure?</DialogTitle>
+                            <DialogDescription>
+                              This action cannot be undone. This will
+                              permanently delete your account and remove your
+                              data from our servers.
+                            </DialogDescription>
+                          </DialogHeader>
+                        </DialogContent>
                       </Dialog>
                     </>
                   ) : null}
@@ -262,7 +271,7 @@ function App() {
                       </DialogTrigger>
                       <DialogContent>
                         <DialogTitle>編輯</DialogTitle>
-                       
+
                         <Flex direction="column" gap="2">
                           <label>
                             <Text as="div" size="2" mb="1" weight="bold">
