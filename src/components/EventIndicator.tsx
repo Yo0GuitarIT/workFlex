@@ -1,28 +1,15 @@
-import { Box } from "@radix-ui/themes";
-
-enum IndicatorEnum {
-  green = "var(--green-9)",
-  red = "var(--red-9)",
-}
-
 interface IndicatorProps {
-  color: keyof typeof IndicatorEnum;
+  color: "green" | "red";
 }
 
 function EventIndicator({ color }: IndicatorProps) {
   return (
-    <Box
-      mr="1"
-      style={{
-        borderRadius: "100%",
-        backgroundColor: IndicatorEnum[color],
-        width: "0.5rem",
-        height: "0.5rem",
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-      }}
-    ></Box>
+    <div
+      className={`mr-1 rounded-full w-2 h-2 flex justify-center items-center ${
+        color === "green" ? "bg-green-500" : "bg-red-500"
+      }`}
+    />
+    
   );
 }
 
