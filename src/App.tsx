@@ -9,7 +9,6 @@ import {
   Grid,
   Text,
   Avatar,
-  Dialog,
   Card,
   Separator,
   DropdownMenu,
@@ -28,6 +27,17 @@ import {
   Pencil1Icon,
   PersonIcon,
 } from "@radix-ui/react-icons";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+  DialogClose
+} from "@/components/ui/dialog"
+
 import { useState } from "react";
 import EventIndicator from "./components/EventIndicator";
 import { MockUserRecords } from "./mockData";
@@ -151,8 +161,8 @@ function App() {
                 >
                   {day > 0 && day <= daysInMonth ? (
                     <>
-                      <Dialog.Root>
-                        <Dialog.Trigger>
+                      <Dialog>
+                        <DialogTrigger>
                           <Box width="100%" height="100%">
                             <Flex direction="column" justify="center">
                               {isToday ? (
@@ -187,34 +197,19 @@ function App() {
                               )}
                             </Flex>
                           </Box>
-                        </Dialog.Trigger>
+                        </DialogTrigger>
 
-                        <Dialog.Content>
-                          <Dialog.Title>當日補休加班狀況</Dialog.Title>
-                          <Dialog.Description size="3">加班</Dialog.Description>
-                          <Text>
-                            Lorem ipsum dolor sit amet consectetur adipisicing
-                            elit. Nihil accusamus veritatis aspernatur assumenda
-                            exercitationem eligendi vel cum velit alias sit nam
-                            architecto, nostrum consectetur nulla deserunt
-                            voluptas commodi aliquam maiores.
-                          </Text>
-                          <Dialog.Description size="3">補休</Dialog.Description>
-                          <Text>
-                            Lorem ipsum dolor sit amet consectetur adipisicing
-                            elit. Nihil accusamus veritatis aspernatur assumenda
-                            exercitationem eligendi vel cum velit alias sit nam
-                            architecto, nostrum consectetur nulla deserunt
-                            voluptas commodi aliquam maiores.
-                          </Text>
-
-                          <Dialog.Close>
-                            <Button variant="soft" color="gray">
-                              關閉
-                            </Button>
-                          </Dialog.Close>
-                        </Dialog.Content>
-                      </Dialog.Root>
+                        <DialogContent>
+    <DialogHeader>
+      <DialogTitle>Are you absolutely sure?</DialogTitle>
+      <DialogDescription>
+        This action cannot be undone. This will permanently delete your account
+        and remove your data from our servers.
+      </DialogDescription>
+    </DialogHeader>
+  </DialogContent>
+                         
+                      </Dialog>
                     </>
                   ) : null}
                 </Box>
@@ -261,15 +256,13 @@ function App() {
                 </Flex>
                 <Flex gap="2">
                   <IconButton color="orange" variant="surface">
-                    <Dialog.Root>
-                      <Dialog.Trigger>
+                    <Dialog>
+                      <DialogTrigger>
                         <Pencil1Icon />
-                      </Dialog.Trigger>
-                      <Dialog.Content>
-                        <Dialog.Title>編輯</Dialog.Title>
-                        <Dialog.Description size="3">
-                          調整您的加班補修狀況
-                        </Dialog.Description>
+                      </DialogTrigger>
+                      <DialogContent>
+                        <DialogTitle>編輯</DialogTitle>
+                       
                         <Flex direction="column" gap="2">
                           <label>
                             <Text as="div" size="2" mb="1" weight="bold">
@@ -318,18 +311,18 @@ function App() {
                             />
                           </label>
                         </Flex>
-                        <Flex gap="3" mt="4" justify="end">
-                          <Dialog.Close>
+                        <DialogFooter>
+                          <DialogClose asChild>
                             <Button variant="soft">儲存</Button>
-                          </Dialog.Close>
-                          <Dialog.Close>
+                          </DialogClose>
+                          <DialogClose>
                             <Button variant="soft" color="gray">
                               取消
                             </Button>
-                          </Dialog.Close>
-                        </Flex>
-                      </Dialog.Content>
-                    </Dialog.Root>
+                          </DialogClose>
+                        </DialogFooter>
+                      </DialogContent>
+                    </Dialog>
                   </IconButton>
                   <IconButton color="red" variant="surface">
                     <EraserIcon />
