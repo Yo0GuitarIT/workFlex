@@ -5,11 +5,10 @@ interface IndicatorProps {
 function EventIndicator({ color }: IndicatorProps) {
   return (
     <div
-      className={`mr-1 rounded-full w-2 h-2 flex justify-center items-center ${
+      className={`mr-1 flex h-2 w-2 items-center justify-center rounded-full ${
         color === "green" ? "bg-green-500" : "bg-red-500"
       }`}
     />
-    
   );
 }
 
