@@ -7,14 +7,6 @@ import {
   Flex,
   Box,
   Grid,
-  Text,
-  Avatar,
-  Card,
-  Separator,
-  Badge,
-  Button,
-  TextField,
-  SegmentedControl,
 } from "@radix-ui/themes";
 import {
   ArrowLeftIcon,
@@ -43,8 +35,13 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu"
-
+} from "@/components/ui/dropdown-menu";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import { Card } from "@/components/ui/card";
+import { Separator } from "@/components/ui/separator";
 
 import { useState } from "react";
 import EventIndicator from "./components/EventIndicator";
@@ -144,7 +141,7 @@ function App() {
               {weeks.map((week, i) => (
                 <Box key={i} style={{ backgroundColor: "var(--blue-5)" }}>
                   <Flex justify="center">
-                    <Text>{week}</Text>
+                    <text>{week}</text>
                   </Flex>
                 </Box>
               ))}
@@ -176,7 +173,9 @@ function App() {
                             <Flex direction="column" justify="center">
                               {isToday ? (
                                 <>
-                                  <Avatar size="1" fallback={day.toString()} />
+                                  <text className="flex h-6 w-6 items-center justify-center rounded-full bg-blue-300">
+                                    {day.toString()}
+                                  </text>
                                   {dayEvents.length > 0 && (
                                     <Flex>
                                       <EventIndicator color="green" />
@@ -185,7 +184,7 @@ function App() {
                                 </>
                               ) : (
                                 <>
-                                  <Text>{day}</Text>
+                                  <text>{day}</text>
                                   {dayEvents.length > 0 && (
                                     <Flex>
                                       {dayEvents.map((event) => (
@@ -226,45 +225,38 @@ function App() {
             })}
           </Grid>
         </Box>
-        <Flex my="2" gap="2" direction="column">
-          <Heading>本月紀錄</Heading>
+        <div className="my-2 flex flex-col space-y-2">
+          <text className="text-2xl">本月紀錄</text>
           {MockUserRecords.map((record) => (
             <Card key={record.id}>
-              <Flex align="center" justify="between">
-                <Flex align="center" gap="2">
-                  <Badge
-                    size="2"
-                    color={
-                      record.records === EventTypeEnum.OVERTIME
-                        ? "blue"
-                        : "green"
-                    }
-                  >
+              <div className="flex items-center justify-between p-3">
+                <div className="flex items-center space-x-2">
+                  <div className="flex h-8 w-8 items-center justify-center rounded bg-slate-400">
                     {record.records === EventTypeEnum.OVERTIME ? (
                       <ClockIcon />
                     ) : (
                       <CameraIcon />
                     )}
-                  </Badge>
-                  <Separator orientation="vertical" size="3" />
-                  <Flex direction="column">
-                    <Text>
+                  </div>
+                  <Separator orientation="vertical" className="mx-2" />
+                  <div>
+                    <text>
                       {record.date.split("-")[1]}/{record.date.split("-")[2]}
                       {record.records === EventTypeEnum.OVERTIME
                         ? "加班"
                         : "補休"}
-                    </Text>
-                    <Flex align="center" gap="2">
+                    </text>
+                    <div className="flex space-x-2">
                       <PersonIcon />
-                      <Text size="2" color="gray">
+                      <text className="text-sm text-gray-600">
                         {record.name}・{record.timeRange.start}~
                         {record.timeRange.end}・{record.hours}小時
-                      </Text>
-                    </Flex>
-                  </Flex>
-                </Flex>
-                <Flex gap="2">
-                  <IconButton color="orange" variant="surface">
+                      </text>
+                    </div>
+                  </div>
+                </div>
+                <div className="flex space-x-2">
+                  <Button variant="outline" size="icon">
                     <Dialog>
                       <DialogTrigger>
                         <Pencil1Icon />
@@ -272,75 +264,70 @@ function App() {
                       <DialogContent>
                         <DialogTitle>編輯</DialogTitle>
 
-                        <Flex direction="column" gap="2">
-                          <label>
-                            <Text as="div" size="2" mb="1" weight="bold">
-                              類型
-                            </Text>
-                            <SegmentedControl.Root
-                              defaultValue={record.records}
-                            >
-                              <SegmentedControl.Item
+                        <div className="flex flex-col space-y-2">
+                          <Label>類型</Label>
+                          {/* //todo: 移除 radix theme 檢視 */}
+                          <RadioGroup
+                            defaultValue={record.records}
+                            className="flex"
+                          >
+                            <div className="flex items-center space-x-2">
+                              <RadioGroupItem
                                 value={EventTypeEnum.OVERTIME}
-                              >
+                                className="text-zinc-500 focus:ring-zinc-900 data-[state=checked]:bg-zinc-900 data-[state=checked]:text-white"
+                              />
+                              <Label htmlFor={EventTypeEnum.OVERTIME}>
                                 加班
-                              </SegmentedControl.Item>
-                              <SegmentedControl.Item
+                              </Label>
+                            </div>
+                            <div className="flex items-center space-x-2">
+                              <RadioGroupItem
                                 value={EventTypeEnum.COMPENSATORY}
-                              >
+                                className="text-zinc-500 focus:ring-zinc-900 data-[state=checked]:bg-zinc-900 data-[state=checked]:text-white"
+                              />
+                              <Label htmlFor={EventTypeEnum.COMPENSATORY}>
                                 補休
-                              </SegmentedControl.Item>
-                            </SegmentedControl.Root>
-                          </label>
-                          <label>
-                            <Text as="div" size="2" mb="1" weight="bold">
-                              日期
-                            </Text>
-                            <TextField.Root
-                              defaultValue={record.date}
-                              placeholder="輸入您的日期"
-                            />
-                          </label>
-                          <label>
-                            <Text as="div" size="2" mb="1" weight="bold">
-                              開始時間
-                            </Text>
-                            <TextField.Root
-                              defaultValue={record.timeRange.start}
-                              placeholder="輸入您的開始時間"
-                            />
-                          </label>
-                          <label>
-                            <Text as="div" size="2" mb="1" weight="bold">
-                              結束時間
-                            </Text>
-                            <TextField.Root
-                              defaultValue={record.timeRange.end}
-                              placeholder="輸入您的結束時間"
-                            />
-                          </label>
-                        </Flex>
+                              </Label>
+                            </div>
+                          </RadioGroup>
+                          <Label htmlFor="date">日期</Label>
+                          <Input
+                            id="date"
+                            defaultValue={record.date}
+                            placeholder="輸入您的日期"
+                          />
+                          <Label htmlFor="startTime">開始時間</Label>
+                          <Input
+                            id="startTime"
+                            defaultValue={record.timeRange.start}
+                            placeholder="輸入您的開始時間"
+                          />
+                          <Label htmlFor="endtime">結束時間</Label>
+                          <Input
+                            id="endtime"
+                            defaultValue={record.timeRange.end}
+                            placeholder="輸入您的結束時間"
+                          />
+                        </div>
                         <DialogFooter>
                           <DialogClose asChild>
-                            <Button variant="soft">儲存</Button>
+                            <Button>儲存</Button>
                           </DialogClose>
                           <DialogClose>
-                            <Button variant="soft" color="gray">
-                              取消
-                            </Button>
+                            <Button variant="secondary">取消</Button>
                           </DialogClose>
                         </DialogFooter>
                       </DialogContent>
                     </Dialog>
-                  </IconButton>
-                  <IconButton color="red" variant="surface">
+                  </Button>
+                  <Button variant="outline" size="icon">
                     <EraserIcon />
-                  </IconButton>
-                </Flex>
-              </Flex>
+                  </Button>
+                </div>
+              </div>
             </Card>
           ))}
-        </Flex>
+        </div>
       </Container>
     </Theme>
   );

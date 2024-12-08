@@ -6,7 +6,7 @@ export const MockUserRecords: UserRecord[] = [
     id: "1",
     name: "佳佳",
     records: EventTypeEnum.OVERTIME,
-    date: "2024-12-09",
+    date: "2024-12-08",
     timeRange: {
       start: "09:00",
       end: "18:00",
