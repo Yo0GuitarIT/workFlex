@@ -1,14 +1,5 @@
 import "@radix-ui/themes/styles.css";
 import {
-  Theme,
-  Heading,
-  Container,
-  IconButton,
-  Flex,
-  Box,
-  Grid,
-} from "@radix-ui/themes";
-import {
   ArrowLeftIcon,
   ArrowRightIcon,
   CameraIcon,
@@ -99,237 +90,209 @@ function App() {
   };
 
   return (
-    <Theme>
-      <Container size="1">
-        <Box p="2" mb="2" style={{ backgroundColor: "var(--blue-5)" }}>
-          <Flex justify="between" align="center" gap="2">
-            <Heading>{`${today.getFullYear()}-${
-              today.getMonth() + 1
-            }-${today.getDate()}`}</Heading>
+    <div className="w-100vw">
+      <div className="mb-2 bg-slate-400 p-2">
+        <div className="flex justify-between">
+          <text className="text-3xl font-bold">{`${today.getFullYear()}-${
+            today.getMonth() + 1
+          }-${today.getDate()}`}</text>
 
-            <DropdownMenu>
-              <DropdownMenuTrigger>
-                <IconButton>
-                  <DoubleArrowDownIcon />
-                </IconButton>
-              </DropdownMenuTrigger>
+          <DropdownMenu>
+            <DropdownMenuTrigger>
+              <Button size="icon">
+                <DoubleArrowDownIcon />
+              </Button>
+            </DropdownMenuTrigger>
 
-              <DropdownMenuContent>
-                <DropdownMenuLabel>Hi,佳佳 🕊</DropdownMenuLabel>
-                <DropdownMenuSeparator />
-                <DropdownMenuItem>登出</DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenu>
-          </Flex>
-        </Box>
+            <DropdownMenuContent>
+              <DropdownMenuLabel>Hi,佳佳 🕊</DropdownMenuLabel>
+              <DropdownMenuSeparator />
+              <DropdownMenuItem>登出</DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
+        </div>
+      </div>
 
-        <Box pb="2">
-          <Flex gap="2">
-            <IconButton onClick={handlePrevMonth}>
-              <ArrowLeftIcon />
-            </IconButton>
-            <Heading>{`${year}年${month + 1}月`}</Heading>
-            <IconButton onClick={handleNextMonth}>
-              <ArrowRightIcon />
-            </IconButton>
-          </Flex>
-        </Box>
+      <div>
+        <Button size="icon" onClick={handlePrevMonth}>
+          <ArrowLeftIcon />
+        </Button>
+        <text>{`${year}年${month + 1}月`}</text>
+        <Button size="icon" onClick={handleNextMonth}>
+          <ArrowRightIcon />
+        </Button>
+      </div>
 
-        <Box p="2" style={{ backgroundColor: "var(--gray-3)" }}>
-          <Box mb="2">
-            <Grid columns="7">
-              {weeks.map((week, i) => (
-                <Box key={i} style={{ backgroundColor: "var(--blue-5)" }}>
-                  <Flex justify="center">
-                    <text>{week}</text>
-                  </Flex>
-                </Box>
-              ))}
-            </Grid>
-          </Box>
-          <Grid columns="7" rows="5" gap="1">
-            {Array.from({ length: 35 }).map((_, i) => {
-              const day = i - firstDay + 1;
-              const isToday =
-                day === today.getDate() &&
-                month === today.getMonth() &&
-                year === today.getFullYear();
-              const currentDate = formatDate(year, month, day);
-              const dayEvents = getEventsForData(currentDate);
-              return (
-                <Box
-                  key={i}
-                  p="1"
-                  style={{
-                    backgroundColor: "var(--gray-1)",
-                    aspectRatio: "1",
-                  }}
-                >
-                  {day > 0 && day <= daysInMonth ? (
-                    <>
-                      <Dialog>
-                        <DialogTrigger>
-                          <Box width="100%" height="100%">
-                            <Flex direction="column" justify="center">
-                              {isToday ? (
-                                <>
-                                  <text className="flex h-6 w-6 items-center justify-center rounded-full bg-blue-300">
-                                    {day.toString()}
-                                  </text>
-                                  {dayEvents.length > 0 && (
-                                    <Flex>
-                                      <EventIndicator color="green" />
-                                    </Flex>
-                                  )}
-                                </>
-                              ) : (
-                                <>
-                                  <text>{day}</text>
-                                  {dayEvents.length > 0 && (
-                                    <Flex>
-                                      {dayEvents.map((event) => (
-                                        //todo: 未來拓展多人同天事件
-                                        <EventIndicator
-                                          key={event.id}
-                                          color={
-                                            event.records ===
-                                            EventTypeEnum.OVERTIME
-                                              ? "red"
-                                              : "green"
-                                          }
-                                        />
-                                      ))}
-                                    </Flex>
-                                  )}
-                                </>
-                              )}
-                            </Flex>
-                          </Box>
-                        </DialogTrigger>
-
-                        <DialogContent>
-                          <DialogHeader>
-                            <DialogTitle>Are you absolutely sure?</DialogTitle>
-                            <DialogDescription>
-                              This action cannot be undone. This will
-                              permanently delete your account and remove your
-                              data from our servers.
-                            </DialogDescription>
-                          </DialogHeader>
-                        </DialogContent>
-                      </Dialog>
-                    </>
-                  ) : null}
-                </Box>
-              );
-            })}
-          </Grid>
-        </Box>
-        <div className="my-2 flex flex-col space-y-2">
-          <text className="text-2xl">本月紀錄</text>
-          {MockUserRecords.map((record) => (
-            <Card key={record.id}>
-              <div className="flex items-center justify-between p-3">
-                <div className="flex items-center space-x-2">
-                  <div className="flex h-8 w-8 items-center justify-center rounded bg-slate-400">
-                    {record.records === EventTypeEnum.OVERTIME ? (
-                      <ClockIcon />
-                    ) : (
-                      <CameraIcon />
-                    )}
-                  </div>
-                  <Separator orientation="vertical" className="mx-2" />
-                  <div>
-                    <text>
-                      {record.date.split("-")[1]}/{record.date.split("-")[2]}
-                      {record.records === EventTypeEnum.OVERTIME
-                        ? "加班"
-                        : "補休"}
-                    </text>
-                    <div className="flex space-x-2">
-                      <PersonIcon />
-                      <text className="text-sm text-gray-600">
-                        {record.name}・{record.timeRange.start}~
-                        {record.timeRange.end}・{record.hours}小時
-                      </text>
-                    </div>
-                  </div>
-                </div>
-                <div className="flex space-x-2">
-                  <Button variant="outline" size="icon">
-                    <Dialog>
-                      <DialogTrigger>
-                        <Pencil1Icon />
-                      </DialogTrigger>
-                      <DialogContent>
-                        <DialogTitle>編輯</DialogTitle>
-
-                        <div className="flex flex-col space-y-2">
-                          <Label>類型</Label>
-                          {/* //todo: 移除 radix theme 檢視 */}
-                          <RadioGroup
-                            defaultValue={record.records}
-                            className="flex"
-                          >
-                            <div className="flex items-center space-x-2">
-                              <RadioGroupItem
-                                value={EventTypeEnum.OVERTIME}
-                                className="text-zinc-500 focus:ring-zinc-900 data-[state=checked]:bg-zinc-900 data-[state=checked]:text-white"
-                              />
-                              <Label htmlFor={EventTypeEnum.OVERTIME}>
-                                加班
-                              </Label>
-                            </div>
-                            <div className="flex items-center space-x-2">
-                              <RadioGroupItem
-                                value={EventTypeEnum.COMPENSATORY}
-                                className="text-zinc-500 focus:ring-zinc-900 data-[state=checked]:bg-zinc-900 data-[state=checked]:text-white"
-                              />
-                              <Label htmlFor={EventTypeEnum.COMPENSATORY}>
-                                補休
-                              </Label>
-                            </div>
-                          </RadioGroup>
-                          <Label htmlFor="date">日期</Label>
-                          <Input
-                            id="date"
-                            defaultValue={record.date}
-                            placeholder="輸入您的日期"
-                          />
-                          <Label htmlFor="startTime">開始時間</Label>
-                          <Input
-                            id="startTime"
-                            defaultValue={record.timeRange.start}
-                            placeholder="輸入您的開始時間"
-                          />
-                          <Label htmlFor="endtime">結束時間</Label>
-                          <Input
-                            id="endtime"
-                            defaultValue={record.timeRange.end}
-                            placeholder="輸入您的結束時間"
-                          />
-                        </div>
-                        <DialogFooter>
-                          <DialogClose asChild>
-                            <Button>儲存</Button>
-                          </DialogClose>
-                          <DialogClose>
-                            <Button variant="secondary">取消</Button>
-                          </DialogClose>
-                        </DialogFooter>
-                      </DialogContent>
-                    </Dialog>
-                  </Button>
-                  <Button variant="outline" size="icon">
-                    <EraserIcon />
-                  </Button>
-                </div>
-              </div>
-            </Card>
+      <div className="my-2 bg-gray-300 p-2">
+        <div className="mb-1 grid grid-cols-7 gap-1">
+          {weeks.map((week, i) => (
+            <div className="w-full bg-blue-100 text-center" key={i}>
+              {week}
+            </div>
           ))}
         </div>
-      </Container>
-    </Theme>
+
+        <div className="grid grid-cols-7 grid-rows-5 gap-1">
+          {Array.from({ length: 35 }).map((_, i) => {
+            const day = i - firstDay + 1;
+            const isToday =
+              day === today.getDate() &&
+              month === today.getMonth() &&
+              year === today.getFullYear();
+            const currentDate = formatDate(year, month, day);
+            const dayEvents = getEventsForData(currentDate);
+            return (
+              <Dialog>
+                <DialogTrigger>
+                  <div className="h-16 w-full bg-white" key={i}>
+                    {day > 0 && day <= daysInMonth ? (
+                      <div className="flex">
+                        <div className="flex flex-col items-center gap-1">
+                          <text
+                            className={`flex h-6 w-6 items-center justify-center rounded-full ${isToday ? "bg-blue-100" : ""}`}
+                          >
+                            {day.toString()}
+                          </text>
+                          {dayEvents.length > 0 && (
+                            <>
+                              {dayEvents.map((event) => (
+                                <EventIndicator
+                                  key={event.id}
+                                  color={
+                                    event.records === EventTypeEnum.OVERTIME
+                                      ? "red"
+                                      : "green"
+                                  }
+                                />
+                              ))}
+                            </>
+                          )}
+                        </div>
+                      </div>
+                    ) : null}
+                  </div>
+                </DialogTrigger>
+                <DialogContent>
+                  <DialogHeader>
+                    <DialogTitle>Are you absolutely sure?</DialogTitle>
+                    <DialogDescription>
+                      This action cannot be undone. This will permanently delete
+                      your account and remove your data from our servers.
+                    </DialogDescription>
+                  </DialogHeader>
+                </DialogContent>
+              </Dialog>
+            );
+          })}
+        </div>
+      </div>
+
+      <div className="my-2 flex flex-col space-y-2">
+        <text className="text-2xl">本月紀錄</text>
+        {MockUserRecords.map((record) => (
+          <Card key={record.id}>
+            <div className="flex items-center justify-between p-3">
+              <div className="flex items-center space-x-2">
+                <div className="flex h-8 w-8 items-center justify-center rounded bg-slate-400">
+                  {record.records === EventTypeEnum.OVERTIME ? (
+                    <ClockIcon />
+                  ) : (
+                    <CameraIcon />
+                  )}
+                </div>
+                <Separator orientation="vertical" className="mx-2" />
+                <div>
+                  <text>
+                    {record.date.split("-")[1]}/{record.date.split("-")[2]}
+                    {record.records === EventTypeEnum.OVERTIME
+                      ? "加班"
+                      : "補休"}
+                  </text>
+                  <div className="flex space-x-2">
+                    <PersonIcon />
+                    <text className="text-sm text-gray-600">
+                      {record.name}・{record.timeRange.start}~
+                      {record.timeRange.end}・{record.hours}小時
+                    </text>
+                  </div>
+                </div>
+              </div>
+              <div className="flex space-x-2">
+                <Button variant="outline" size="icon">
+                  <Dialog>
+                    <DialogTrigger>
+                      <Pencil1Icon />
+                    </DialogTrigger>
+                    <DialogContent>
+                      <DialogTitle>編輯</DialogTitle>
+
+                      <div className="flex flex-col space-y-2">
+                        <Label>類型</Label>
+                        {/* //todo: 移除 radix theme 檢視 */}
+                        <RadioGroup
+                          defaultValue={record.records}
+                          className="flex"
+                        >
+                          <div className="flex items-center space-x-2">
+                            <RadioGroupItem
+                              value={EventTypeEnum.OVERTIME}
+                              className="text-zinc-500 focus:ring-zinc-900 data-[state=checked]:bg-zinc-900 data-[state=checked]:text-white"
+                            />
+                            <Label htmlFor={EventTypeEnum.OVERTIME}>加班</Label>
+                          </div>
+                          <div className="flex items-center space-x-2">
+                            <RadioGroupItem
+                              value={EventTypeEnum.COMPENSATORY}
+                              className="text-zinc-500 focus:ring-zinc-900 data-[state=checked]:bg-zinc-900 data-[state=checked]:text-white"
+                            />
+                            <Label htmlFor={EventTypeEnum.COMPENSATORY}>
+                              補休
+                            </Label>
+                          </div>
+                        </RadioGroup>
+                        <Label htmlFor="date">日期</Label>
+                        <Input
+                          id="date"
+                          defaultValue={record.date}
+                          placeholder="輸入您的日期"
+                        />
+                        <Label htmlFor="startTime">開始時間</Label>
+                        <Input
+                          id="startTime"
+                          defaultValue={record.timeRange.start}
+                          placeholder="輸入您的開始時間"
+                        />
+                        <Label htmlFor="endtime">結束時間</Label>
+                        <Input
+                          id="endtime"
+                          defaultValue={record.timeRange.end}
+                          placeholder="輸入您的結束時間"
+                        />
+                      </div>
+
+                      <DialogFooter>
+                      <div className="flex space-x-2">
+                        <DialogClose>
+                          <Button>儲存</Button>
+                        </DialogClose>
+
+                        <DialogClose>
+                          <Button>取消</Button>
+                        </DialogClose>
+                      </div>
+                      </DialogFooter>
+                    </DialogContent>
+                  </Dialog>
+                </Button>
+                <Button variant="outline" size="icon">
+                  <EraserIcon />
+                </Button>
+              </div>
+            </div>
+          </Card>
+        ))}
+      </div>
+    </div>
   );
 }
 
