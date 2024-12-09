@@ -20,3 +20,10 @@ export interface UserRecord {
   hours: number;
   createdAt: string; // YYYY-MM-DD HH:mm:ss
 }
+
+export interface EditRecord{
+  record:string;
+  date: string;
+  startTime: string;
+  endTime: string;
+}

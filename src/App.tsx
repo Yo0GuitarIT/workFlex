@@ -1,4 +1,3 @@
-import "@radix-ui/themes/styles.css";
 import {
   ArrowLeftIcon,
   ArrowRightIcon,
@@ -34,14 +33,21 @@ import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Card } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import EventIndicator from "./components/EventIndicator";
 import { MockUserRecords } from "./mockData";
 import { EventTypeEnum } from "./types/enums";
-import { UserRecord } from "./types/interfaces";
+import { EditRecord, UserRecord } from "./types/interfaces";
 
 function App() {
   const [currentDate, setCurrentDate] = useState(new Date());
+  const [records, setRecords] = useState<UserRecord[]>([]);
+  const [editRecord, setEditRecord] = useState<EditRecord>({
+    record: "",
+    date: "",
+    startTime: "",
+    endTime: "",
+  });
 
   const year = currentDate.getFullYear();
   const month = currentDate.getMonth();
@@ -89,16 +95,41 @@ function App() {
     ).padStart(2, "0")}`;
   };
 
+  const handleEditRecord = (e: React.ChangeEvent<HTMLInputElement>, item: string) => {
+    setEditRecord((prev) => ({
+      ...prev,
+      [item]: e.target.value
+    }));
+  };
+
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    console.log("submit", editRecord);
+    setEditRecord({
+      record: "",
+      date: "",
+      startTime: "",
+      endTime: "",
+    });
+  };
+
+  useEffect(() => {
+    // 模擬API取得資料
+    setTimeout(() => {
+      setRecords(MockUserRecords);
+    }, 1000);
+  }, []);
+
   return (
     <div className="w-100vw">
       <div className="mb-2 bg-slate-400 p-2">
         <div className="flex justify-between">
-          <text className="text-3xl font-bold">{`${today.getFullYear()}-${
+          <p className="text-3xl font-bold">{`${today.getFullYear()}-${
             today.getMonth() + 1
-          }-${today.getDate()}`}</text>
+          }-${today.getDate()}`}</p>
 
           <DropdownMenu>
-            <DropdownMenuTrigger>
+            <DropdownMenuTrigger asChild>
               <Button size="icon">
                 <DoubleArrowDownIcon />
               </Button>
@@ -113,11 +144,11 @@ function App() {
         </div>
       </div>
 
-      <div>
+      <div className="flex items-center gap-2">
         <Button size="icon" onClick={handlePrevMonth}>
           <ArrowLeftIcon />
         </Button>
-        <text>{`${year}年${month + 1}月`}</text>
+        <p>{`${year}年${month + 1}月`}</p>
         <Button size="icon" onClick={handleNextMonth}>
           <ArrowRightIcon />
         </Button>
@@ -142,54 +173,41 @@ function App() {
             const currentDate = formatDate(year, month, day);
             const dayEvents = getEventsForData(currentDate);
             return (
-              <Dialog>
-                <DialogTrigger>
-                  <div className="h-16 w-full bg-white" key={i}>
-                    {day > 0 && day <= daysInMonth ? (
-                      <div className="flex">
-                        <div className="flex flex-col items-center gap-1">
-                          <text
-                            className={`flex h-6 w-6 items-center justify-center rounded-full ${isToday ? "bg-blue-100" : ""}`}
-                          >
-                            {day.toString()}
-                          </text>
-                          {dayEvents.length > 0 && (
-                            <>
-                              {dayEvents.map((event) => (
-                                <EventIndicator
-                                  key={event.id}
-                                  color={
-                                    event.records === EventTypeEnum.OVERTIME
-                                      ? "red"
-                                      : "green"
-                                  }
-                                />
-                              ))}
-                            </>
-                          )}
-                        </div>
-                      </div>
-                    ) : null}
+              <div key={i} className="h-16 w-full bg-white">
+                {day > 0 && day <= daysInMonth ? (
+                  <div className="flex">
+                    <div className="flex flex-col items-center gap-1">
+                      <p
+                        className={`flex h-6 w-6 items-center justify-center rounded-full ${isToday ? "bg-blue-100" : ""}`}
+                      >
+                        {day.toString()}
+                      </p>
+                      {dayEvents.length > 0 && (
+                        <>
+                          {dayEvents.map((event) => (
+                            <EventIndicator
+                              key={event.id}
+                              color={
+                                event.records === EventTypeEnum.OVERTIME
+                                  ? "red"
+                                  : "green"
+                              }
+                            />
+                          ))}
+                        </>
+                      )}
+                    </div>
                   </div>
-                </DialogTrigger>
-                <DialogContent>
-                  <DialogHeader>
-                    <DialogTitle>Are you absolutely sure?</DialogTitle>
-                    <DialogDescription>
-                      This action cannot be undone. This will permanently delete
-                      your account and remove your data from our servers.
-                    </DialogDescription>
-                  </DialogHeader>
-                </DialogContent>
-              </Dialog>
+                ) : null}
+              </div>
             );
           })}
         </div>
       </div>
 
       <div className="my-2 flex flex-col space-y-2">
-        <text className="text-2xl">本月紀錄</text>
-        {MockUserRecords.map((record) => (
+        <p className="text-2xl">本月紀錄</p>
+        {records?.map((record) => (
           <Card key={record.id}>
             <div className="flex items-center justify-between p-3">
               <div className="flex items-center space-x-2">
@@ -202,88 +220,87 @@ function App() {
                 </div>
                 <Separator orientation="vertical" className="mx-2" />
                 <div>
-                  <text>
+                  <p>
                     {record.date.split("-")[1]}/{record.date.split("-")[2]}
                     {record.records === EventTypeEnum.OVERTIME
-                      ? "加班"
-                      : "補休"}
-                  </text>
+                      ? " 加班"
+                      : " 補休"}
+                  </p>
                   <div className="flex space-x-2">
                     <PersonIcon />
-                    <text className="text-sm text-gray-600">
+                    <p className="text-sm text-gray-600">
                       {record.name}・{record.timeRange.start}~
                       {record.timeRange.end}・{record.hours}小時
-                    </text>
+                    </p>
                   </div>
                 </div>
               </div>
               <div className="flex space-x-2">
-                <Button variant="outline" size="icon">
-                  <Dialog>
-                    <DialogTrigger>
+                <Dialog>
+                  <DialogTrigger asChild>
+                    <Button variant="outline" size="icon">
                       <Pencil1Icon />
-                    </DialogTrigger>
-                    <DialogContent>
-                      <DialogTitle>編輯</DialogTitle>
+                    </Button>
+                  </DialogTrigger>
 
-                      <div className="flex flex-col space-y-2">
-                        <Label>類型</Label>
-                        {/* //todo: 移除 radix theme 檢視 */}
-                        <RadioGroup
-                          defaultValue={record.records}
-                          className="flex"
-                        >
-                          <div className="flex items-center space-x-2">
-                            <RadioGroupItem
-                              value={EventTypeEnum.OVERTIME}
-                              className="text-zinc-500 focus:ring-zinc-900 data-[state=checked]:bg-zinc-900 data-[state=checked]:text-white"
-                            />
-                            <Label htmlFor={EventTypeEnum.OVERTIME}>加班</Label>
-                          </div>
-                          <div className="flex items-center space-x-2">
-                            <RadioGroupItem
-                              value={EventTypeEnum.COMPENSATORY}
-                              className="text-zinc-500 focus:ring-zinc-900 data-[state=checked]:bg-zinc-900 data-[state=checked]:text-white"
-                            />
-                            <Label htmlFor={EventTypeEnum.COMPENSATORY}>
-                              補休
-                            </Label>
-                          </div>
-                        </RadioGroup>
-                        <Label htmlFor="date">日期</Label>
-                        <Input
-                          id="date"
-                          defaultValue={record.date}
-                          placeholder="輸入您的日期"
-                        />
-                        <Label htmlFor="startTime">開始時間</Label>
-                        <Input
-                          id="startTime"
-                          defaultValue={record.timeRange.start}
-                          placeholder="輸入您的開始時間"
-                        />
-                        <Label htmlFor="endtime">結束時間</Label>
-                        <Input
-                          id="endtime"
-                          defaultValue={record.timeRange.end}
-                          placeholder="輸入您的結束時間"
-                        />
-                      </div>
+                  <DialogContent>
+                    <DialogHeader>
+                      <DialogTitle>編輯</DialogTitle>
+                    </DialogHeader>
+                    <DialogDescription>修改加班或補休紀錄</DialogDescription>
+                    <form onSubmit={handleSubmit}>
+                      <RadioGroup
+                        defaultValue={record.records}
+                        onValueChange={(value) => handleEditRecord({ target: { value } } as React.ChangeEvent<HTMLInputElement>, "record")}
+                      >
+                        <div className="flex items-center space-x-2">
+                          <RadioGroupItem
+                            value={EventTypeEnum.OVERTIME}
+                            className="text-zinc-500 focus:ring-zinc-900 data-[state=checked]:bg-zinc-900 data-[state=checked]:text-white"
+                          />
+                          <Label htmlFor={EventTypeEnum.OVERTIME}>加班</Label>
+                        </div>
+                        <div className="flex items-center space-x-2">
+                          <RadioGroupItem
+                            value={EventTypeEnum.COMPENSATORY}
+                            className="text-zinc-500 focus:ring-zinc-900 data-[state=checked]:bg-zinc-900 data-[state=checked]:text-white"
+                          />
+                          <Label htmlFor={EventTypeEnum.COMPENSATORY}>
+                            補修
+                          </Label>
+                        </div>
+                      </RadioGroup>
+
+                      <Label htmlFor="date">日期</Label>
+                      <Input
+                        id="date"
+                        defaultValue={record.date}
+                        onChange={(e) => handleEditRecord(e, "date")}
+                      />
+
+                      <Label htmlFor="startTime">開始時間</Label>
+                      <Input
+                        id="startTime"
+                        defaultValue={record.timeRange.start}
+                        onChange={(e) => handleEditRecord(e, "startTime")}
+                      />
+
+                      <Label htmlFor="endTime">結束時間</Label>
+                      <Input
+                        id="endTime"
+                        defaultValue={record.timeRange.end}
+                        onChange={(e) => handleEditRecord(e, "endTime")}
+                      />
 
                       <DialogFooter>
-                      <div className="flex space-x-2">
-                        <DialogClose>
-                          <Button>儲存</Button>
+                        <DialogClose asChild>
+                          <Button type="submit">儲存</Button>
                         </DialogClose>
-
-                        <DialogClose>
-                          <Button>取消</Button>
-                        </DialogClose>
-                      </div>
                       </DialogFooter>
-                    </DialogContent>
-                  </Dialog>
-                </Button>
+                    </form>
+                  </DialogContent>
+                </Dialog>
+
                 <Button variant="outline" size="icon">
                   <EraserIcon />
                 </Button>
