@@ -43,6 +43,7 @@ function App() {
   const [currentDate, setCurrentDate] = useState(new Date());
   const [records, setRecords] = useState<UserRecord[]>([]);
   const [editRecord, setEditRecord] = useState<EditRecord>({
+    id: "",
     record: "",
     date: "",
     startTime: "",
@@ -95,17 +96,44 @@ function App() {
     ).padStart(2, "0")}`;
   };
 
-  const handleEditRecord = (e: React.ChangeEvent<HTMLInputElement>, item: string) => {
+  const handleEditRecord = (
+    e: React.ChangeEvent<HTMLInputElement>,
+    item: string,
+  ) => {
     setEditRecord((prev) => ({
       ...prev,
-      [item]: e.target.value
+      [item]: e.target.value,
     }));
   };
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleOnSubmit = (e: React.FormEvent<HTMLFormElement>, id: string) => {
+    console.log(id);
     e.preventDefault();
+    setEditRecord((prev) => ({
+      ...prev,
+      id: id,
+    }));
+
     console.log("submit", editRecord);
+
+    setRecords((prevRecords) =>
+      prevRecords.map((record) =>
+        record.id === id
+          ? {
+              ...record,
+              records: (editRecord.record as EventTypeEnum) || record.records,
+              date: editRecord.date || record.date,
+              timeRange: {
+                start: editRecord.startTime || record.timeRange.start,
+                end: editRecord.endTime || record.timeRange.end,
+              },
+            }
+      : record,
+      ),
+    );
+
     setEditRecord({
+      id: "",
       record: "",
       date: "",
       startTime: "",
@@ -144,7 +172,7 @@ function App() {
         </div>
       </div>
 
-      <div className="flex items-center gap-2">
+      <div className="mx-2 flex items-center gap-2">
         <Button size="icon" onClick={handlePrevMonth}>
           <ArrowLeftIcon />
         </Button>
@@ -248,10 +276,20 @@ function App() {
                       <DialogTitle>編輯</DialogTitle>
                     </DialogHeader>
                     <DialogDescription>修改加班或補休紀錄</DialogDescription>
-                    <form onSubmit={handleSubmit}>
+                    <form
+                      id={record.id}
+                      onSubmit={(e) => handleOnSubmit(e, record.id)}
+                    >
                       <RadioGroup
                         defaultValue={record.records}
-                        onValueChange={(value) => handleEditRecord({ target: { value } } as React.ChangeEvent<HTMLInputElement>, "record")}
+                        onValueChange={(value) =>
+                          handleEditRecord(
+                            {
+                              target: { value },
+                            } as React.ChangeEvent<HTMLInputElement>,
+                            "record",
+                          )
+                        }
                       >
                         <div className="flex items-center space-x-2">
                           <RadioGroupItem
@@ -292,7 +330,7 @@ function App() {
                         onChange={(e) => handleEditRecord(e, "endTime")}
                       />
 
-                      <DialogFooter>
+                      <DialogFooter className="mt-4">
                         <DialogClose asChild>
                           <Button type="submit">儲存</Button>
                         </DialogClose>

@@ -21,8 +21,9 @@ export interface UserRecord {
   createdAt: string; // YYYY-MM-DD HH:mm:ss
 }
 
-export interface EditRecord{
-  record:string;
+export interface EditRecord {
+  id: string;
+  record: string;
   date: string;
   startTime: string;
   endTime: string;
