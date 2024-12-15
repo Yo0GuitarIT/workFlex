@@ -7,6 +7,7 @@ import {
   EraserIcon,
   Pencil1Icon,
   PersonIcon,
+  CalendarIcon,
 } from "@radix-ui/react-icons";
 import {
   Dialog,
@@ -32,6 +33,14 @@ import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Card } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "./components/ui/popover";
+import { Calendar } from "@/components/ui/calendar";
+import { cn } from "./lib/utils";
+import { format, set } from "date-fns";
 
 import { useEffect, useState } from "react";
 import EventIndicator from "./components/EventIndicator";
@@ -39,15 +48,25 @@ import { MockUserRecords } from "./mockData";
 import { EventTypeEnum } from "./types/enums";
 import { EditRecord, UserRecord } from "./types/interfaces";
 
+// TODO 放至於 utils.ts
+const formatDateToString = (date: Date): string => {
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, "0");
+  const day = String(date.getDate()).padStart(2, "0");
+  return `${year}-${month}-${day}`;
+};
+
 function App() {
   const [currentDate, setCurrentDate] = useState(new Date());
   const [records, setRecords] = useState<UserRecord[]>([]);
   const [editRecord, setEditRecord] = useState<EditRecord>({
     id: "",
     record: "",
-    date: "",
-    startTime: "",
-    endTime: "",
+    date: new Date(),
+    timeRange: {
+      start: "",
+      end: "",
+    },
   });
 
   const year = currentDate.getFullYear();
@@ -79,10 +98,13 @@ function App() {
    * @param {string} date
    * @returns {UserRecord[]}
    */
-  const getEventsForData = (date: string): UserRecord[] => {
-    return MockUserRecords.filter((event) => event.date === date);
+  const getEventsForData = (date: Date): UserRecord[] => {
+    const targetDateStr = formatDateToString(date);
+    return MockUserRecords.filter((event) => {
+      const eventDateStr = formatDateToString(event.date);
+      return eventDateStr === targetDateStr;
+    });
   };
-
   /**
    * 格式化日期
    * @param {number} year
@@ -90,10 +112,8 @@ function App() {
    * @param {number} day
    * @returns {string}
    */
-  const formatDate = (year: number, month: number, day: number): string => {
-    return `${year}-${String(month + 1).padStart(2, "0")}-${String(
-      day,
-    ).padStart(2, "0")}`;
+  const formatDate = (year: number, month: number, day: number): Date => {
+    return new Date(year, month, day);
   };
 
   const handleEditRecord = (
@@ -104,6 +124,26 @@ function App() {
       ...prev,
       [item]: e.target.value,
     }));
+  };
+
+  const handleDialogOnClick = (record: UserRecord) => {
+    console.log(record);
+    setEditRecord((prev) => ({
+      ...prev,
+      id: record.id,
+      record: record.records as unknown as string,
+      date: record.date,
+      timeRange: { start: record.timeRange.start, end: record.timeRange.end },
+    }));
+  };
+
+  const handleCalenderOnSelect = (date: Date | undefined) => {
+    if (date) {
+      setEditRecord((prev) => ({
+        ...prev,
+        date: date,
+      }));
+    }
   };
 
   const handleOnSubmit = (e: React.FormEvent<HTMLFormElement>, id: string) => {
@@ -124,20 +164,22 @@ function App() {
               records: (editRecord.record as EventTypeEnum) || record.records,
               date: editRecord.date || record.date,
               timeRange: {
-                start: editRecord.startTime || record.timeRange.start,
-                end: editRecord.endTime || record.timeRange.end,
+                start: editRecord.timeRange.start || record.timeRange.start,
+                end: editRecord.timeRange.end || record.timeRange.end,
               },
             }
-      : record,
+          : record,
       ),
     );
 
     setEditRecord({
       id: "",
       record: "",
-      date: "",
-      startTime: "",
-      endTime: "",
+      date: new Date(),
+      timeRange: {
+        start: "",
+        end: "",
+      },
     });
   };
 
@@ -200,6 +242,7 @@ function App() {
               year === today.getFullYear();
             const currentDate = formatDate(year, month, day);
             const dayEvents = getEventsForData(currentDate);
+
             return (
               <div key={i} className="h-16 w-full bg-white">
                 {day > 0 && day <= daysInMonth ? (
@@ -249,7 +292,7 @@ function App() {
                 <Separator orientation="vertical" className="mx-2" />
                 <div>
                   <p>
-                    {record.date.split("-")[1]}/{record.date.split("-")[2]}
+                    {formatDateToString(record.date)}
                     {record.records === EventTypeEnum.OVERTIME
                       ? " 加班"
                       : " 補休"}
@@ -266,7 +309,11 @@ function App() {
               <div className="flex space-x-2">
                 <Dialog>
                   <DialogTrigger asChild>
-                    <Button variant="outline" size="icon">
+                    <Button
+                      variant="outline"
+                      size="icon"
+                      onClick={() => handleDialogOnClick(record)}
+                    >
                       <Pencil1Icon />
                     </Button>
                   </DialogTrigger>
@@ -277,11 +324,12 @@ function App() {
                     </DialogHeader>
                     <DialogDescription>修改加班或補休紀錄</DialogDescription>
                     <form
-                      id={record.id}
-                      onSubmit={(e) => handleOnSubmit(e, record.id)}
+                      className="space-y-2"
+                      id={editRecord.id}
+                      onSubmit={(e) => handleOnSubmit(e, editRecord.id)}
                     >
                       <RadioGroup
-                        defaultValue={record.records}
+                        defaultValue={editRecord.record}
                         onValueChange={(value) =>
                           handleEditRecord(
                             {
@@ -309,26 +357,55 @@ function App() {
                         </div>
                       </RadioGroup>
 
-                      <Label htmlFor="date">日期</Label>
-                      <Input
-                        id="date"
-                        defaultValue={record.date}
-                        onChange={(e) => handleEditRecord(e, "date")}
-                      />
+                      <div className="space-x-2">
+                        <Label htmlFor="date">日期</Label>
+                        <Popover>
+                          <PopoverTrigger asChild>
+                            <Button
+                              variant={"outline"}
+                              className={cn(
+                                "w-[280px] justify-start text-left font-normal",
+                                !record.date && "text-muted-foreground",
+                              )}
+                            >
+                              <CalendarIcon />
+                              {record.date ? (
+                                formatDateToString(editRecord.date)
+                              ) : (
+                                <span>Pick a date</span>
+                              )}
+                            </Button>
+                          </PopoverTrigger>
+                          <PopoverContent className="w-auto p-0">
+                            <Calendar
+                              mode="single"
+                              selected={record.date}
+                              onSelect={handleCalenderOnSelect}
+                              initialFocus
+                            />
+                          </PopoverContent>
+                        </Popover>
+                      </div>
 
-                      <Label htmlFor="startTime">開始時間</Label>
-                      <Input
-                        id="startTime"
-                        defaultValue={record.timeRange.start}
-                        onChange={(e) => handleEditRecord(e, "startTime")}
-                      />
+                      <div className="flex items-center space-x-2">
+                        <Label htmlFor="startTime">開始時間</Label>
+                        <Input
+                          className="w-32"
+                          id="startTime"
+                          defaultValue={editRecord.timeRange.start}
+                          onChange={(e) => handleEditRecord(e, "startTime")}
+                        />
+                      </div>
 
-                      <Label htmlFor="endTime">結束時間</Label>
-                      <Input
-                        id="endTime"
-                        defaultValue={record.timeRange.end}
-                        onChange={(e) => handleEditRecord(e, "endTime")}
-                      />
+                      <div className="flex items-center space-x-2">
+                        <Label htmlFor="endTime">結束時間</Label>
+                        <Input
+                          className="w-32"
+                          id="endTime"
+                          defaultValue={editRecord.timeRange.end}
+                          onChange={(e) => handleEditRecord(e, "endTime")}
+                        />
+                      </div>
 
                       <DialogFooter className="mt-4">
                         <DialogClose asChild>
