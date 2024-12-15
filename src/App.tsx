@@ -47,7 +47,6 @@ import { MockUserRecords } from "./mockData";
 import { EventTypeEnum } from "./types/enums";
 import { EditRecord, UserRecord } from "./types/interfaces";
 
-
 function App() {
   const [currentDate, setCurrentDate] = useState(new Date());
   const [records, setRecords] = useState<UserRecord[]>([]);
@@ -146,8 +145,6 @@ function App() {
       id: id,
     }));
 
-    console.log("submit", editRecord);
-
     setRecords((prevRecords) =>
       prevRecords.map((record) =>
         record.id === id
@@ -173,6 +170,13 @@ function App() {
         end: "",
       },
     });
+  };
+
+  const handleDeleteRecord = (id: string) => {
+    console.log(id);
+    setRecords((prevRecords) =>
+      prevRecords.filter((record) => record.id !== id),
+    );
   };
 
   useEffect(() => {
@@ -408,7 +412,11 @@ function App() {
                   </DialogContent>
                 </Dialog>
 
-                <Button variant="outline" size="icon">
+                <Button
+                  variant="outline"
+                  size="icon"
+                  onClick={() => handleDeleteRecord(record.id)}
+                >
                   <EraserIcon />
                 </Button>
               </div>
