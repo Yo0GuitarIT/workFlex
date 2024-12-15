@@ -91,7 +91,7 @@ function App() {
    */
   const getEventsForData = (date: Date): UserRecord[] => {
     const targetDateStr = formatDateToString(date);
-    return MockUserRecords.filter((event) => {
+    return records.filter((event) => {
       const eventDateStr = formatDateToString(event.date);
       return eventDateStr === targetDateStr;
     });
