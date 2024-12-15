@@ -86,25 +86,26 @@ function App() {
 
   /**
    * 取得指定日期的事件
-   * @param {string} date
+   * @param {number} year - 年份
+   * @param {number} month - 月份
+   * @param {number} day - 日期
    * @returns {UserRecord[]}
    */
-  const getEventsForData = (date: Date): UserRecord[] => {
-    const targetDateStr = formatDateToString(date);
+  const getEventsForData = (
+    year: number,
+    month: number,
+    day: number,
+  ): UserRecord[] => {
+    // 將日期資料轉換成日期資料型態 yyyy-MM-dd
+    const dateData = new Date(year, month, day);
+    // 將日期資料轉換成字串
+    const targetDateStr = formatDateToString(dateData);
+    // 取得符合日期的事件
     return records.filter((event) => {
+      // 轉換事件日期成字串
       const eventDateStr = formatDateToString(event.date);
       return eventDateStr === targetDateStr;
     });
-  };
-  /**
-   * 格式化日期
-   * @param {number} year
-   * @param {number} month
-   * @param {number} day
-   * @returns {string}
-   */
-  const formatDate = (year: number, month: number, day: number): Date => {
-    return new Date(year, month, day);
   };
 
   const handleEditRecord = (
@@ -118,7 +119,6 @@ function App() {
   };
 
   const handleDialogOnClick = (record: UserRecord) => {
-    console.log(record);
     setEditRecord((prev) => ({
       ...prev,
       id: record.id,
@@ -137,8 +137,14 @@ function App() {
     }
   };
 
+  const handleRadioGroupOnValueChange = (event: string) => {
+    setEditRecord((prev) => ({
+      ...prev,
+      record: event,
+    }));
+  };
+
   const handleOnSubmit = (e: React.FormEvent<HTMLFormElement>, id: string) => {
-    console.log(id);
     e.preventDefault();
     setEditRecord((prev) => ({
       ...prev,
@@ -173,7 +179,6 @@ function App() {
   };
 
   const handleDeleteRecord = (id: string) => {
-    console.log(id);
     setRecords((prevRecords) =>
       prevRecords.filter((record) => record.id !== id),
     );
@@ -231,23 +236,27 @@ function App() {
 
         <div className="grid grid-cols-7 grid-rows-5 gap-1">
           {Array.from({ length: 35 }).map((_, i) => {
-            const day = i - firstDay + 1;
+            // 當天日期號碼
+            const dayNumber = i - firstDay + 1;
+
+            // 是否為今天
             const isToday =
-              day === today.getDate() &&
+              dayNumber === today.getDate() &&
               month === today.getMonth() &&
               year === today.getFullYear();
-            const currentDate = formatDate(year, month, day);
-            const dayEvents = getEventsForData(currentDate);
+
+            // 取得當天的事件
+            const dayEvents = getEventsForData(year, month, dayNumber);
 
             return (
               <div key={i} className="h-16 w-full bg-white">
-                {day > 0 && day <= daysInMonth ? (
+                {dayNumber > 0 && dayNumber <= daysInMonth ? (
                   <div className="flex">
                     <div className="flex flex-col items-center gap-1">
                       <p
                         className={`flex h-6 w-6 items-center justify-center rounded-full ${isToday ? "bg-blue-100" : ""}`}
                       >
-                        {day.toString()}
+                        {dayNumber}
                       </p>
                       {dayEvents.length > 0 && (
                         <>
@@ -326,14 +335,7 @@ function App() {
                     >
                       <RadioGroup
                         defaultValue={editRecord.record}
-                        onValueChange={(value) =>
-                          handleEditRecord(
-                            {
-                              target: { value },
-                            } as React.ChangeEvent<HTMLInputElement>,
-                            "record",
-                          )
-                        }
+                        onValueChange={handleRadioGroupOnValueChange}
                       >
                         <div className="flex items-center space-x-2">
                           <RadioGroupItem
