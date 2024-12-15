@@ -46,6 +46,7 @@ import EventIndicator from "./components/EventIndicator";
 import { MockUserRecords } from "./mockData";
 import { EventTypeEnum } from "./types/enums";
 import { EditRecord, UserRecord } from "./types/interfaces";
+import { PlusCircleIcon } from "lucide-react";
 
 function App() {
   const [currentDate, setCurrentDate] = useState(new Date());
@@ -215,13 +216,19 @@ function App() {
         </div>
       </div>
 
-      <div className="mx-2 flex items-center gap-2">
-        <Button size="icon" onClick={handlePrevMonth}>
-          <ArrowLeftIcon />
-        </Button>
-        <p>{`${year}年${month + 1}月`}</p>
-        <Button size="icon" onClick={handleNextMonth}>
-          <ArrowRightIcon />
+      <div className="mx-2 flex justify-between">
+        <div className="flex items-center gap-2">
+          <Button size="icon" onClick={handlePrevMonth}>
+            <ArrowLeftIcon />
+          </Button>
+          <p>{`${year}年${month + 1}月`}</p>
+          <Button size="icon" onClick={handleNextMonth}>
+            <ArrowRightIcon />
+          </Button>
+        </div>
+        <Button variant="outline">
+          <PlusCircleIcon />
+          新增
         </Button>
       </div>
 
