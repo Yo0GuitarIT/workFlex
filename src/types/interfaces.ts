@@ -14,15 +14,15 @@ export interface TimeRange {
 export interface UserRecord {
   id: string;
   name: string;
-  records: EventTypeEnum;
-  date: Date; // Date 型別
+  event: EventTypeEnum;
+  date: Date;
   timeRange: TimeRange;
   hours: number;
 }
 
 export interface EditRecord {
   id: string;
-  record: string;
+  event: EventTypeEnum;
   date: Date;
   timeRange: TimeRange;
 }

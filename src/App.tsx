@@ -53,7 +53,7 @@ function App() {
   const [records, setRecords] = useState<UserRecord[]>([]);
   const [editRecord, setEditRecord] = useState<EditRecord>({
     id: "",
-    record: "",
+    event: EventTypeEnum.OVERTIME,
     date: new Date(),
     timeRange: {
       start: "",
@@ -120,10 +120,11 @@ function App() {
   };
 
   const handleDialogOnClick = (record: UserRecord) => {
+    console.log(record);
     setEditRecord((prev) => ({
       ...prev,
       id: record.id,
-      record: record.records as unknown as string,
+      event: record.event,
       date: record.date,
       timeRange: { start: record.timeRange.start, end: record.timeRange.end },
     }));
@@ -157,7 +158,7 @@ function App() {
         record.id === id
           ? {
               ...record,
-              records: (editRecord.record as EventTypeEnum) || record.records,
+              records: editRecord.event || record.event,
               date: editRecord.date || record.date,
               timeRange: {
                 start: editRecord.timeRange.start || record.timeRange.start,
@@ -170,7 +171,7 @@ function App() {
 
     setEditRecord({
       id: "",
-      record: "",
+      event: EventTypeEnum.OVERTIME,
       date: new Date(),
       timeRange: {
         start: "",
@@ -267,11 +268,11 @@ function App() {
                       </p>
                       {dayEvents.length > 0 && (
                         <>
-                          {dayEvents.map((event) => (
+                          {dayEvents.map((record) => (
                             <EventIndicator
-                              key={event.id}
+                              key={record.id}
                               color={
-                                event.records === EventTypeEnum.OVERTIME
+                                record.event === EventTypeEnum.OVERTIME
                                   ? "red"
                                   : "green"
                               }
@@ -295,7 +296,7 @@ function App() {
             <div className="flex items-center justify-between p-3">
               <div className="flex items-center space-x-2">
                 <div className="flex h-8 w-8 items-center justify-center rounded bg-slate-400">
-                  {record.records === EventTypeEnum.OVERTIME ? (
+                  {record.event === EventTypeEnum.OVERTIME ? (
                     <ClockIcon />
                   ) : (
                     <CameraIcon />
@@ -305,7 +306,7 @@ function App() {
                 <div>
                   <p>
                     {formatDateToString(record.date)}
-                    {record.records === EventTypeEnum.OVERTIME
+                    {record.event === EventTypeEnum.OVERTIME
                       ? " 加班"
                       : " 補休"}
                   </p>
@@ -341,7 +342,7 @@ function App() {
                       onSubmit={(e) => handleOnSubmit(e, editRecord.id)}
                     >
                       <RadioGroup
-                        defaultValue={editRecord.record}
+                        defaultValue={editRecord.event}
                         onValueChange={handleRadioGroupOnValueChange}
                       >
                         <div className="flex items-center space-x-2">

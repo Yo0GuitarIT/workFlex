@@ -5,7 +5,7 @@ export const MockUserRecords: UserRecord[] = [
   {
     id: "1",
     name: "佳佳",
-    records: EventTypeEnum.COMPENSATORY,
+    event: EventTypeEnum.COMPENSATORY,
     date: new Date("2024-12-09"),
     timeRange: {
       start: "09:00",
@@ -16,7 +16,7 @@ export const MockUserRecords: UserRecord[] = [
   {
     id: "2",
     name: "佳佳",
-    records: EventTypeEnum.OVERTIME,
+    event: EventTypeEnum.OVERTIME,
     date: new Date("2024-12-17"),
     timeRange: {
       start: "13:00",
@@ -27,7 +27,7 @@ export const MockUserRecords: UserRecord[] = [
   {
     id: "3",
     name: "佳佳",
-    records: EventTypeEnum.COMPENSATORY,
+    event: EventTypeEnum.COMPENSATORY,
     date: new Date("2024-12-20"),
     timeRange: {
       start: "09:00",
@@ -38,7 +38,7 @@ export const MockUserRecords: UserRecord[] = [
   {
     id: "4",
     name: "佳佳",
-    records: EventTypeEnum.OVERTIME,
+    event: EventTypeEnum.OVERTIME,
     date: new Date("2024-12-23"),
     timeRange: {
       start: "09:00",
@@ -49,7 +49,7 @@ export const MockUserRecords: UserRecord[] = [
   {
     id: "5",
     name: "佳佳",
-    records: EventTypeEnum.COMPENSATORY,
+    event: EventTypeEnum.COMPENSATORY,
     date: new Date("2024-12-24"),
     timeRange: {
       start: "13:00",
