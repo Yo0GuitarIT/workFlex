@@ -227,9 +227,8 @@ function App() {
             <ArrowRightIcon />
           </Button>
         </div>
-        <Button variant="outline">
+        <Button size="icon" variant="outline">
           <PlusCircleIcon />
-          新增
         </Button>
       </div>
 
