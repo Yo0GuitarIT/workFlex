@@ -1,4 +1,4 @@
-function App() {
+function Dashboard() {
     return (
         <div className="flex h-screen w-screen items-center justify-center bg-gray-50">
             <p className="font-bold">
@@ -8,4 +8,4 @@ function App() {
     );
 }
 
-export default App;
+export default Dashboard;
