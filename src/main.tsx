@@ -1,37 +1,14 @@
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import { createBrowserRouter, RouterProvider } from "react-router";
-import Login from "./pages/Login";
-import Dashboard from "./pages/Dashboard";
-import Records from "./pages/Records";
-import App from "./App";
-import NotFound from "./pages/NotFound";
-import { Navigate } from "react-router";
+import Login from "./routes/Login";
+import Dashboard from "./routes/Dashboard";
+import NotFound from "./routes/NotFound";
 
 const router = createBrowserRouter([
-    {
-        path: "/",
-        element: <App />,
-        errorElement: <NotFound />,
-        children: [
-            {
-                index: true,
-                element: <Navigate to="/login" replace />,
-            },
-            {
-                path: "login",
-                element: <Login />,
-            },
-            {
-                path: "records",
-                element: <Records />,
-            },
-            {
-                path: "dashboard",
-                element: <Dashboard />,
-            },
-        ],
-    },
+    { path: "/", element: <Login /> },
+    { path: "/dashboard", element: <Dashboard /> },
+    { path: "*", element: <NotFound /> },
 ]);
 
 createRoot(document.getElementById("root")!).render(
