@@ -1,11 +1,5 @@
 function Dashboard() {
-    return (
-        <div className="flex h-screen w-screen items-center justify-center bg-gray-50">
-            <p className="font-bold">
-                This is new workflex system... <br /> comming soon...
-            </p>
-        </div>
-    );
+    return <h1>This is the Dashboard page.</h1>;
 }
 
 export default Dashboard;

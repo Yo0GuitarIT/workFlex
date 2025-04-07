@@ -1,9 +1,14 @@
+import { useRouteError } from "react-router";
+
 function NotFound() {
+    const error = useRouteError();
+
     return (
-        <div className="flex h-screen flex-col items-center justify-center">
-            <h1 className="text-4xl font-bold">404 - Not Found</h1>
-            <p className="mt-4 text-lg">
-                The page you are looking for does not exist.
+        <div className="flex h-screen w-screen items-center justify-center bg-gray-50">
+            <p className="font-bold">
+                404 - Not Found
+                <br />
+                {error instanceof Error ? error.message : "Unknown error"}
             </p>
         </div>
     );
