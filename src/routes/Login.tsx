@@ -1,8 +1,8 @@
-import { signInWithPopup } from "firebase/auth";
+import { signInWithPopup, signOut } from "firebase/auth";
 import { auth, provider } from "../lib/firebase";
 import { useNavigate } from "react-router";
 
-const ALLOWED_USER_EMAILS = ["yo0.guitar.it@gmail.com"];
+const whitelist = ["yo0.guitar.it@gmail.com"];
 
 function Login() {
     const navigate = useNavigate();
@@ -12,9 +12,10 @@ function Login() {
             const result = await signInWithPopup(auth, provider);
             const email = result.user.email;
 
-            if (!email || !ALLOWED_USER_EMAILS.includes(email)) {
+            // 如果使用者的 email 不在 whitelist 中，則登出
+            if (!email || !whitelist.includes(email)) {
                 alert("你沒有權限登入");
-                return;
+                await signOut(auth);
             }
 
             navigate("/dashboard");
