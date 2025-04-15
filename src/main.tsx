@@ -3,7 +3,7 @@ import { createRoot } from "react-dom/client";
 import { createBrowserRouter, RouterProvider } from "react-router";
 import Login from "./routes/Login";
 import DashboardPage from "./routes/DashboardPage";
-import RecordPage from "./routes/RecordPage";
+import Records from "./routes/Records.tsx";
 import NotFound from "./routes/NotFound";
 import ProtectedRoute from "./components/ProtectedRoute";
 import AuthProvider from "./context/AuthContext";
@@ -22,7 +22,7 @@ const router = createBrowserRouter([
         path: "/record",
         element: (
             <AuthProvider>
-                <RecordPage />
+                <Records />
             </AuthProvider>
         ),
     },

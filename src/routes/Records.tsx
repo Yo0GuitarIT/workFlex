@@ -1,4 +1,4 @@
-const RecordPage = () => {
+const Records = () => {
     return (
         <div>
             <h1>Record Page</h1>
@@ -7,4 +7,4 @@ const RecordPage = () => {
     );
 };
 
-export default RecordPage;
+export default Records;
