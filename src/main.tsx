@@ -2,10 +2,11 @@ import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import { createBrowserRouter, RouterProvider } from "react-router";
 import Login from "./routes/Login";
-import Dashboard from "./routes/Dashboard";
+import DashboardPage from "./routes/DashboardPage";
+import RecordPage from "./routes/RecordPage";
 import NotFound from "./routes/NotFound";
-import { AuthProvider } from "./contexts/authContext";
 import ProtectedRoute from "./components/ProtectedRoute";
+import AuthProvider from "./context/AuthContext";
 
 const router = createBrowserRouter([
     { path: "/", element: <Login /> },
@@ -13,8 +14,16 @@ const router = createBrowserRouter([
         path: "/dashboard",
         element: (
             <ProtectedRoute>
-                <Dashboard />
+                <DashboardPage />
             </ProtectedRoute>
+        ),
+    },
+    {
+        path: "/record",
+        element: (
+            <AuthProvider>
+                <RecordPage />
+            </AuthProvider>
         ),
     },
     { path: "*", element: <NotFound /> },
