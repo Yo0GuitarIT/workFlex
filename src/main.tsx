@@ -2,11 +2,14 @@ import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import { createBrowserRouter, RouterProvider } from "react-router";
 import Login from "./routes/Login";
-import DashboardPage from "./routes/DashboardPage";
 import Records from "./routes/Records.tsx";
+import Dashboard from "./routes/Dashboard.tsx";
 import NotFound from "./routes/NotFound";
 import ProtectedRoute from "./components/ProtectedRoute";
 import AuthProvider from "./context/AuthContext";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+
+const queryClient = new QueryClient();
 
 const router = createBrowserRouter([
     { path: "/", element: <Login /> },
@@ -14,7 +17,7 @@ const router = createBrowserRouter([
         path: "/dashboard",
         element: (
             <ProtectedRoute>
-                <DashboardPage />
+                <Dashboard />
             </ProtectedRoute>
         ),
     },
@@ -31,8 +34,10 @@ const router = createBrowserRouter([
 
 createRoot(document.getElementById("root")!).render(
     <StrictMode>
-        <AuthProvider>
-            <RouterProvider router={router} />
-        </AuthProvider>
+        <QueryClientProvider client={queryClient}>
+            <AuthProvider>
+                <RouterProvider router={router} />
+            </AuthProvider>
+        </QueryClientProvider>
     </StrictMode>,
 );
