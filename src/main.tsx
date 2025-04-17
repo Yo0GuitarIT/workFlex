@@ -24,9 +24,9 @@ const router = createBrowserRouter([
     {
         path: "/record",
         element: (
-            <AuthProvider>
+            <ProtectedRoute>
                 <Records />
-            </AuthProvider>
+            </ProtectedRoute>
         ),
     },
     { path: "*", element: <NotFound /> },
