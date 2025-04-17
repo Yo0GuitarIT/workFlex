@@ -2,7 +2,7 @@ import { signInWithPopup, signOut } from "firebase/auth";
 import { auth, provider } from "../lib/firebase";
 import { useNavigate } from "react-router";
 
-const whitelist = process.env.REACT_APP_EMAIL_WHITELIST?.split(",") || [];
+const whitelist = import.meta.env.VITE_APP_EMAIL_WHITELIST?.split(",") || [];
 
 function Login() {
     const navigate = useNavigate();
