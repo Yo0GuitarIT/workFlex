@@ -12,14 +12,17 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 const queryClient = new QueryClient();
 
 const router = createBrowserRouter([
-    { path: "/", element: <Login /> },
     {
-        path: "/dashboard",
+        path: "/",
         element: (
             <ProtectedRoute>
                 <Dashboard />
             </ProtectedRoute>
         ),
+    },
+    {
+        path: "/login",
+        element: <Login />,
     },
     {
         path: "/record",
