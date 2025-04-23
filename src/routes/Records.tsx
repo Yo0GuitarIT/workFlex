@@ -1,18 +1,16 @@
 import useAuth from "../hook/useAuth";
-import useUserRole from "../hook/useUserRole";
 import { signOut } from "firebase/auth";
 import { auth } from "../lib/firebase";
 import { useNavigate } from "react-router";
 
 const Records = () => {
-    const { user } = useAuth();
+    const { user , role, loading} = useAuth();
     const navigate = useNavigate();
-    const { data: role, isLoading } = useUserRole(user?.uid);
 
+    if (loading) return <div>讀取角色中...</div>;
     if (!user) return <div>尚未登入</div>;
-    if (isLoading) return <div>讀取角色中...</div>;
 
-    const isEditor = role?.role === "editor";
+    const isEditor = role === "editor";
 
     const handleLogout = async () => {
         await signOut(auth);

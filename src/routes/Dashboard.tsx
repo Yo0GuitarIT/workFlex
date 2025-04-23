@@ -1,9 +1,16 @@
 import { useNavigate } from "react-router";
 import { signOut } from "firebase/auth";
 import { auth } from "../lib/firebase";
+import useAuth from "../hook/useAuth";
 
 function Dashboard() {
+    const { user, role, loading } = useAuth();
     const navigate = useNavigate();
+
+    if (loading) return <div>讀取角色中...</div>;
+    if (!user) return <div>尚未登入</div>;
+
+    const isEditor = role === "editor";
 
     const handleRecord = () => {
         navigate("/record");
@@ -29,6 +36,9 @@ function Dashboard() {
             >
                 登出
             </button>
+
+            {isEditor && <p>你是編輯者，可以新增 / 刪除紀錄</p>}
+            {!isEditor && <p>你是瀏覽者，只能看紀錄</p>}
         </div>
     );
 }
