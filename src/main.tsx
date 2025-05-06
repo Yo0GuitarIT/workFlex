@@ -1,13 +1,14 @@
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import { createBrowserRouter, RouterProvider } from "react-router";
-import Login from "./routes/Login";
-import Records from "./routes/Records.tsx";
-import Dashboard from "./routes/Dashboard.tsx";
-import NotFound from "./routes/NotFound";
+
 import ProtectedRoute from "./components/ProtectedRoute";
 import AuthProvider from "./context/ AuthProvider.tsx";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import Dashboard from "./routes/Dashboard.tsx";
+import Login from "./routes/Login";
+import NotFound from "./routes/NotFound";
+import Records from "./routes/Records.tsx";
 
 const queryClient = new QueryClient();
 

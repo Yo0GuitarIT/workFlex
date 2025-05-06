@@ -1,7 +1,9 @@
-import useAuth from "../hook/useAuth";
 import { signOut } from "firebase/auth";
-import { auth } from "../lib/firebase";
 import { useNavigate } from "react-router";
+
+import RecordForm from "../components/RecordForm";
+import useAuth from "../hook/useAuth";
+import { auth } from "../lib/firebase";
 
 const Records = () => {
     const { role } = useAuth();
@@ -36,6 +38,8 @@ const Records = () => {
 
             {isEditor && <p>你是編輯者，可以新增 / 刪除紀錄</p>}
             {!isEditor && <p>你是瀏覽者，只能看紀錄</p>}
+
+            <RecordForm/>
         </div>
     );
 };

@@ -1,7 +1,8 @@
-import { useNavigate } from "react-router";
 import { signOut } from "firebase/auth";
-import { auth } from "../lib/firebase";
+import { useNavigate } from "react-router";
+
 import useAuth from "../hook/useAuth";
+import { auth } from "../lib/firebase";
 
 function Dashboard() {
     const { role } = useAuth();

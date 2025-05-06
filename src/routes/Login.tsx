@@ -1,6 +1,7 @@
 import { signInWithPopup, signOut } from "firebase/auth";
-import { auth, provider } from "../lib/firebase";
 import { useLocation, useNavigate } from "react-router";
+
+import { auth, provider } from "../lib/firebase";
 
 const whitelist = import.meta.env.VITE_APP_EMAIL_WHITELIST?.split(",") || [];
 
