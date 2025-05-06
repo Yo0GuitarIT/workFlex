@@ -4,11 +4,8 @@ import { auth } from "../lib/firebase";
 import { useNavigate } from "react-router";
 
 const Records = () => {
-    const { user , role, loading} = useAuth();
+    const { role } = useAuth();
     const navigate = useNavigate();
-
-    if (loading) return <div>讀取角色中...</div>;
-    if (!user) return <div>尚未登入</div>;
 
     const isEditor = role === "editor";
 
@@ -22,11 +19,11 @@ const Records = () => {
     };
 
     return (
-        <div>
-            <h1>紀錄頁</h1>
+        <div className="p-8">
+            <h1 className="text-2xl font-bold">紀錄頁</h1>
             <button
                 className="mt-4 mr-4 rounded bg-blue-500 px-4 py-2 text-white hover:bg-blue-600"
-                onClick={handleDashboard}  
+                onClick={handleDashboard}
             >
                 dashboard
             </button>
@@ -36,7 +33,7 @@ const Records = () => {
             >
                 登出
             </button>
-            
+
             {isEditor && <p>你是編輯者，可以新增 / 刪除紀錄</p>}
             {!isEditor && <p>你是瀏覽者，只能看紀錄</p>}
         </div>
