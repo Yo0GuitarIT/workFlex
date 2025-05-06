@@ -6,7 +6,7 @@ import Records from "./routes/Records.tsx";
 import Dashboard from "./routes/Dashboard.tsx";
 import NotFound from "./routes/NotFound";
 import ProtectedRoute from "./components/ProtectedRoute";
-import AuthProvider from "./context/AuthContext";
+import AuthProvider from "./context/ AuthProvider.tsx";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
 const queryClient = new QueryClient();
