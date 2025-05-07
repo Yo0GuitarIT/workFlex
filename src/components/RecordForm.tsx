@@ -1,59 +1,9 @@
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useMutation } from "@tanstack/react-query";
-import { useForm } from "react-hook-form";
-import { z } from "zod";
-
-import useAuth from "../hook/useAuth";
-import { addRecord } from "../lib/firestore";
-
-// 使用 Zod 定義表單驗證結構
-const recordSchema = z.object({
-    type: z.enum(["overtime", "compensate"]), // 類型：加班或補休
-    date: z.string().min(1, "日期為必填"), // 日期：必填字串
-    hours: z.number().positive("時數必須為正數"), // 時數：必須為正數
-    reason: z.string().min(1, "事由為必填"), // 事由：必填字串
-});
-
-// 從 Zod 結構推斷表單資料型別
-type RecordFormData = z.infer<typeof recordSchema>;
+import useRecordForm from "../hook/useRecordForm";
 
 // 紀錄表單元件
 const RecordForm = () => {
-    // 使用 useAuth hook 取得使用者資訊
-    const { user } = useAuth();
-    // 使用 useForm hook 處理表單狀態與驗證
-    const {
-        register, // 註冊表單欄位
-        handleSubmit, // 處理表單提交
-        reset, // 重設表單
-        formState: { errors }, // 表單錯誤狀態
-    } = useForm<RecordFormData>({
-        resolver: zodResolver(recordSchema), // 使用 Zod 解析器進行驗證
-    });
-
-    // 使用 useMutation hook 處理新增紀錄的非同步操作
-    const mutation = useMutation({
-        mutationFn: addRecord, // 執行新增紀錄的函式
-        onSuccess: () => {
-            alert("紀錄新增成功！"); // 成功時顯示提示訊息
-            reset(); // 清空表單
-        },
-        onError: (error) => {
-            alert(`新增失敗: ${error.message}`); // 失敗時顯示錯誤訊息
-        },
-    });
-
-    // 表單提交處理函式
-    const onSubmit = (data: RecordFormData) => {
-        if (!user) return;
-
-        // 準備要提交的紀錄資料
-        const recordData = {
-            ...data, // 展開表單資料
-            uid: user.uid, // 加入使用者 ID
-        };
-        mutation.mutate(recordData); // 執行新增紀錄操作
-    };
+    const { register, handleSubmit, errors, mutation, onSubmit } =
+        useRecordForm();
 
     return (
         <form onSubmit={handleSubmit(onSubmit)} className="mt-8 space-y-6">
@@ -157,5 +107,4 @@ const RecordForm = () => {
     );
 };
 
-// 匯出 RecordForm 元件
 export default RecordForm;
