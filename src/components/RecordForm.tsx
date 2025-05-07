@@ -45,10 +45,8 @@ const RecordForm = () => {
 
     // 表單提交處理函式
     const onSubmit = (data: RecordFormData) => {
-        if (!user) {
-            alert("請先登入"); // 若使用者未登入，提示登入
-            return;
-        }
+        if (!user) return;
+
         // 準備要提交的紀錄資料
         const recordData = {
             ...data, // 展開表單資料
