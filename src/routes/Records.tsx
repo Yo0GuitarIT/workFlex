@@ -3,6 +3,7 @@ import { signOut } from "firebase/auth";
 import { useNavigate } from "react-router";
 
 import RecordForm from "../components/RecordForm";
+import RecordList from "../components/RecordList";
 import useAuth from "../hook/useAuth";
 import { auth } from "../lib/firebase";
 
@@ -24,14 +25,14 @@ const Records = () => {
     return (
         <div className="p-8">
             <h1 className="text-2xl font-bold">紀錄頁</h1>
-            <Button className="m-4"  onClick={handleDashboard}>dashboard</Button>
-
-            <Button onClick={handleLogout}>登出</Button>
 
             {isEditor && <p>你是編輯者，可以新增 / 刪除紀錄</p>}
             {!isEditor && <p>你是瀏覽者，只能看紀錄</p>}
-
+            <RecordList />
             <RecordForm />
+           
+            <Button onClick={handleDashboard}>dashboard</Button>
+            <Button onClick={handleLogout}>登出</Button>
         </div>
     );
 };
