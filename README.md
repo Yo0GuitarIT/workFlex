@@ -5,27 +5,32 @@ This project is a web application built to help manage work flexibility, such as
 ## 🛠️ Technology Stack
 
 - ⚡ **Vite**
-- ⚛️ **React**
+- ⚛️ **React 19**
 - 🔷 **TypeScript**
-- 🎨 **Tailwind CSS**
-- 🔥 **Firebase** (Authentication & Firestore)
-- 🔄 **React Router**
+- 🎨 **Tailwind CSS v4**
+- 🔥 **Firebase v11** (Authentication & Firestore)
+- 🔄 **React Router v7**
 - 📋 **React Hook Form**
-- 🛡️ **Zod**
-- 🔄 **React Query (TanStack Query)**
+- 🛡️ **Zod** (Form validation)
+- 🔄 **TanStack Query v5** (Data fetching)
+- 🎭 **Mantine UI v8** (UI components & notifications)
+- 🎨 **Phosphor Icons** (Modern icon set)
 - ⚙️ **ESLint & Prettier**
 
 ## ✨ Features
 
-- 🔑 **User Authentication**: Secure sign-in with Google.
+- 🔑 **User Authentication**: Secure sign-in with Google and email whitelist protection.
 - 👤 **Role-Based Access Control**: Differentiates between `editor` and `viewer` roles.
-    - 📝 Editors can add/delete records.
+    - 📝 Editors can add records.
     - 👀 Viewers can only view records.
 - 📄 **Record Management**:
-    - ➕ Add new records for overtime or compensation time ( Firestore integration for `addRecord` is set up).
-- 🖥️ **Dashboard**: Main landing page after login.
+    - ➕ Add new records for overtime or compensation time.
+    - 📊 View all records with type indication, hours, and reasons.
+    - 🔄 Real-time updates with React Query.
+- 🖥️ **Dashboard**: Main landing page after login with role-specific information.
 - 📈 **Records Page**: Displays records and allows editors to manage them.
 - 🛡️ **Protected Routes**: Ensures only authenticated users can access certain pages.
+- 🔔 **Notifications**: User-friendly success and error notifications.
 - 🤷 **Not Found Page**: Handles invalid routes gracefully.
 
 ## 🚧 Development Progress
@@ -35,12 +40,13 @@ This project is a web application built to help manage work flexibility, such as
 - ✅ **Routing**: Basic navigation between Dashboard, Records, and Login pages is implemented.
 - ✅ **Authentication Flow**: Login, logout, and session persistence are functional.
 - ✅ **Role Management**: User roles are fetched and applied for conditional rendering.
-- ✅ **Styling**: TailwindCSS is configured and basic styling is applied.
+- ✅ **Styling**: TailwindCSS is configured and Mantine UI components are integrated.
 - ✅ **Linting & Formatting**: ESLint and Prettier are set up for code quality.
-- ⏳ **Record Form**: The UI for `RecordForm.tsx` is basic and needs implementation for input fields and submission logic.
-- ⏳ **Displaying Records**: Logic to fetch and display records from Firestore needs to be implemented.
+- ✅ **Record Form**: Form fully implemented with Zod validation and React Hook Form.
+- ✅ **Displaying Records**: Records are successfully fetched and displayed with proper loading states.
+- ✅ **Notifications**: Success and error notifications are implemented using Mantine Notifications.
 - ⏳ **Editing/Deleting Records**: Functionality for editors to modify or remove records is pending.
-- ⏳ **Comprehensive Error Handling**: More robust error handling across the application.
+- ⏳ **Comprehensive Error Handling**: More robust global error handling needs implementation.
 - ⏳ **Unit/Integration Tests**: Not yet implemented.
 
 ## 🚀 Getting Started
