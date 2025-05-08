@@ -1,3 +1,5 @@
+import { Button, Textarea } from "@mantine/core";
+
 import useRecordForm from "../hook/useRecordForm";
 
 // 紀錄表單元件
@@ -74,34 +76,24 @@ const RecordForm = () => {
             </div>
 
             <div>
-                <label
-                    htmlFor="reason"
-                    className="block text-sm font-medium text-gray-700"
-                >
-                    事由
-                </label>
-                <textarea
+                <Textarea
                     id="reason"
                     {...register("reason")}
                     rows={3}
-                    className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                    label="事由"
+                    error={errors.reason?.message}
+                    className="mt-1 block w-full"
                 />
-                {errors.reason && (
-                    <p className="mt-2 text-sm text-red-600">
-                        {errors.reason.message}
-                    </p>
-                )}
             </div>
 
             <div>
-                <button
+                <Button
                     type="submit"
                     disabled={mutation.isPending} // 若正在提交則禁用按鈕
-                    className="flex w-full justify-center rounded-md border border-transparent bg-indigo-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 focus:outline-none disabled:opacity-50"
                 >
                     {mutation.isPending ? "提交中..." : "提交"}{" "}
                     {/* 根據提交狀態顯示不同文字 */}
-                </button>
+                </Button>
             </div>
         </form>
     );
