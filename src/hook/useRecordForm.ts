@@ -35,9 +35,9 @@ const useRecordForm = () => {
             ...data, // 展開表單資料
             uid: user.uid, // 加入使用者 ID
         };
-        mutation.mutate(recordData,{
+        mutation.mutate(recordData, {
             onSuccess: () => {
-                reset(); 
+                reset();
             },
         }); // 執行新增紀錄操作
     };
