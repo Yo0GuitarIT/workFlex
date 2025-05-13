@@ -14,17 +14,25 @@ const recordSchema = z.object({
 
 export type RecordFormData = z.infer<typeof recordSchema>; // 從 Zod 結構推斷表單資料型別
 
-const useRecordForm = () => {
+/**
+ * @description 使用 useForm 來處理新增紀錄的表單
+ */
+const useCreateRecord = () => {
     const { user } = useAuth();
     const mutation = useRecordMutation();
 
     const {
         register,
         handleSubmit,
+        control,
         reset,
         formState: { errors },
     } = useForm<RecordFormData>({
         resolver: zodResolver(recordSchema), // 使用 Zod 解析器進行驗證
+        defaultValues: {
+            type: "overtime",
+            hours: 1, // 預設時數
+        },
     });
 
     const onSubmit = (data: RecordFormData) => {
@@ -44,10 +52,11 @@ const useRecordForm = () => {
     return {
         register,
         handleSubmit,
+        control,
         errors,
         mutation,
         onSubmit,
     };
 };
 
-export default useRecordForm;
+export default useCreateRecord;

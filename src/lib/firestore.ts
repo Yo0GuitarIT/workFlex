@@ -1,4 +1,10 @@
-import { addDoc, collection, serverTimestamp } from "firebase/firestore";
+import {
+    addDoc,
+    collection,
+    deleteDoc,
+    doc,
+    serverTimestamp,
+} from "firebase/firestore";
 
 import { db } from "./firebase";
 
@@ -19,4 +25,9 @@ const addRecord = async (record: RecordType) => {
     });
 };
 
-export { addRecord };
+// 刪除 Firestore 中的紀錄
+const deleteRecord = async (recordId: string) => {
+    await deleteDoc(doc(db, "records", recordId));
+};
+
+export { addRecord, deleteRecord };

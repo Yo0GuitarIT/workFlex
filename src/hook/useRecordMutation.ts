@@ -1,14 +1,22 @@
 import { showNotification } from "@mantine/notifications";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 import { addRecord } from "../lib/firestore";
 
-import { RecordFormData } from "./useRecordForm";
+import { RecordFormData } from "./useCreateRecord";
 
-const useRecordMutation=(onSuccess?: () => void)=> {
+/**
+ * @description 使用 useMutation 來新增 Firestore 中的紀錄
+ */
+const useRecordMutation = (onSuccess?: () => void) => {
+    const queryClient = useQueryClient();
+
     return useMutation({
         mutationFn: (data: RecordFormData & { uid: string }) => addRecord(data),
         onSuccess: () => {
+            // 刷新紀錄列表
+            queryClient.invalidateQueries({ queryKey: ["records"] });
+
             showNotification({
                 title: "成功",
                 message: "紀錄新增成功！",
@@ -24,6 +32,6 @@ const useRecordMutation=(onSuccess?: () => void)=> {
             });
         },
     });
-}
+};
 
 export default useRecordMutation;
