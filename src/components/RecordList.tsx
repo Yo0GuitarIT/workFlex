@@ -1,10 +1,30 @@
-import { Badge, Card, Group, Skeleton, Stack, Text } from "@mantine/core";
-import { Clock, NotePencil } from "@phosphor-icons/react";
+import {
+    ActionIcon,
+    Badge,
+    Card,
+    Group,
+    Skeleton,
+    Stack,
+    Text,
+} from "@mantine/core";
+import { Clock, NotePencil, Trash } from "@phosphor-icons/react";
 
+import useAuth from "../hook/useAuth";
+import useDeleteRecordMutation from "../hook/useDeleteRecordMutation";
 import useRecordsQuery from "../hook/useRecordQuery";
 
 const RecordList = () => {
     const { data, isLoading, isError } = useRecordsQuery();
+    const { role } = useAuth();
+    const deleteRecord = useDeleteRecordMutation();
+
+    const isEditor = role === "editor";
+
+    const handleDelete = (recordId: string) => {
+        if (window.confirm("確定要刪除這筆紀錄嗎？")) {
+            deleteRecord.mutate(recordId);
+        }
+    };
 
     if (isLoading) return <Skeleton height={80} mt={"md"} radius={"md"} />;
     if (isError) return <Text c="red">載入紀錄失敗，請稍後再試。</Text>;
@@ -23,9 +43,21 @@ const RecordList = () => {
                         >
                             {record.type === "overtime" ? "加班" : "補休"}
                         </Badge>
-                        <Text size="xs" c="dimmed">
-                            {record.date}
-                        </Text>
+                        <Group>
+                            <Text size="xs" c="dimmed">
+                                {record.date}
+                            </Text>
+                            {isEditor && (
+                                <ActionIcon
+                                    color="red"
+                                    variant="subtle"
+                                    onClick={() => handleDelete(record.id)}
+                                    aria-label="刪除記錄"
+                                >
+                                    <Trash size={16} />
+                                </ActionIcon>
+                            )}
+                        </Group>
                     </Group>
 
                     <Group align="center" mt="xs">

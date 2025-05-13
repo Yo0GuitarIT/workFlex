@@ -1,11 +1,11 @@
 import { Button, Textarea } from "@mantine/core";
 
-import useRecordForm from "../hook/useRecordForm";
+import useCreateRecord from "../hook/useCreateRecord";
 
 // 紀錄表單元件
 const RecordForm = () => {
     const { register, handleSubmit, errors, mutation, onSubmit } =
-        useRecordForm();
+        useCreateRecord();
 
     return (
         <form onSubmit={handleSubmit(onSubmit)} className="mt-8 space-y-6">

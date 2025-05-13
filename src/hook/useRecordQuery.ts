@@ -14,13 +14,16 @@ export type RecordItem = {
     createdAt?: { seconds: number };
 };
 
+/**
+ * @description 使用 useQuery 來獲取 Firestore 中的紀錄資料
+ */
 const useRecordsQuery = () => {
     const { user } = useAuth();
 
     return useQuery<RecordItem[]>({
         queryKey: ["records", user?.uid],
         enabled: !!user?.uid,
-        queryFn: async () => { // Todo: 全局例外處理
+        queryFn: async () => { // TODO: 全局例外處理
             try {
                 const ref = collection(db, "records");
                 const q = query(

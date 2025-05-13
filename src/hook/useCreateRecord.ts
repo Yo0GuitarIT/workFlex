@@ -14,7 +14,10 @@ const recordSchema = z.object({
 
 export type RecordFormData = z.infer<typeof recordSchema>; // 從 Zod 結構推斷表單資料型別
 
-const useRecordForm = () => {
+/**
+ * @description 使用 useForm 來處理新增紀錄的表單
+ */
+const useCreateRecord = () => {
     const { user } = useAuth();
     const mutation = useRecordMutation();
 
@@ -50,4 +53,4 @@ const useRecordForm = () => {
     };
 };
 
-export default useRecordForm;
+export default useCreateRecord;
