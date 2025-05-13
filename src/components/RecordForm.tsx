@@ -1,10 +1,11 @@
-import { Button, Textarea } from "@mantine/core";
+import { Button, NumberInput, Select, Textarea } from "@mantine/core";
+import { Controller } from "react-hook-form";
 
 import useCreateRecord from "../hook/useCreateRecord";
 
 // 紀錄表單元件
 const RecordForm = () => {
-    const { register, handleSubmit, errors, mutation, onSubmit } =
+    const { register, handleSubmit, control, errors, mutation, onSubmit } =
         useCreateRecord();
 
     return (
@@ -13,25 +14,24 @@ const RecordForm = () => {
                 <h1 className="text-xl font-semibold">新增紀錄</h1>
             </div>
             <div>
-                <label
-                    htmlFor="type"
-                    className="block text-sm font-medium text-gray-700"
-                >
-                    類型
-                </label>
-                <select
-                    id="type"
-                    {...register("type")}
-                    className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
-                >
-                    <option value="overtime">加班</option>
-                    <option value="compensate">補休</option>
-                </select>
-                {errors.type && (
-                    <p className="mt-2 text-sm text-red-600">
-                        {errors.type.message}
-                    </p>
-                )}
+                <Controller
+                    name="type"
+                    control={control}
+                    render={({ field }) => (
+                        <Select
+                            id="type"
+                            label="類型"
+                            placeholder="請選擇類型"
+                            data={[
+                                { value: "overtime", label: "加班" },
+                                { value: "compensate", label: "補休" },
+                            ]}
+                            {...field}
+                            error={errors.type?.message}
+                            mt="xs"
+                        />
+                    )}
+                />
             </div>
 
             <div>
@@ -55,24 +55,23 @@ const RecordForm = () => {
             </div>
 
             <div>
-                <label
-                    htmlFor="hours"
-                    className="block text-sm font-medium text-gray-700"
-                >
-                    時數
-                </label>
-                <input
-                    type="number"
-                    id="hours"
-                    step="0.5"
-                    {...register("hours", { valueAsNumber: true })}
-                    className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                <Controller
+                    name="hours"
+                    control={control}
+                    render={({ field }) => (
+                        <NumberInput
+                            id="hours"
+                            label="時數"
+                            placeholder="請輸入時數"
+                            step={0.5}
+                            min={0.5}
+                            decimalScale={1}
+                            {...field}
+                            error={errors.hours?.message}
+                            mt="xs"
+                        />
+                    )}
                 />
-                {errors.hours && (
-                    <p className="mt-2 text-sm text-red-600">
-                        {errors.hours.message}
-                    </p>
-                )}
             </div>
 
             <div>

@@ -24,10 +24,15 @@ const useCreateRecord = () => {
     const {
         register,
         handleSubmit,
+        control,
         reset,
         formState: { errors },
     } = useForm<RecordFormData>({
         resolver: zodResolver(recordSchema), // 使用 Zod 解析器進行驗證
+        defaultValues: {
+            type: "overtime",
+            hours: 1, // 預設時數
+        },
     });
 
     const onSubmit = (data: RecordFormData) => {
@@ -47,6 +52,7 @@ const useCreateRecord = () => {
     return {
         register,
         handleSubmit,
+        control,
         errors,
         mutation,
         onSubmit,
