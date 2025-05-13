@@ -10,29 +10,26 @@ const RecordForm = () => {
 
     return (
         <form onSubmit={handleSubmit(onSubmit)} className="mt-8 space-y-6">
-            <div>
-                <h1 className="text-xl font-semibold">新增紀錄</h1>
-            </div>
-            <div>
-                <Controller
-                    name="type"
-                    control={control}
-                    render={({ field }) => (
-                        <Select
-                            id="type"
-                            label="類型"
-                            placeholder="請選擇類型"
-                            data={[
-                                { value: "overtime", label: "加班" },
-                                { value: "compensate", label: "補休" },
-                            ]}
-                            {...field}
-                            error={errors.type?.message}
-                            mt="xs"
-                        />
-                    )}
-                />
-            </div>
+            <h1 className="text-xl font-semibold">新增紀錄</h1>
+
+            <Controller
+                name="type"
+                control={control}
+                render={({ field }) => (
+                    <Select
+                        id="type"
+                        label="類型"
+                        placeholder="請選擇類型"
+                        data={[
+                            { value: "overtime", label: "加班" },
+                            { value: "compensate", label: "補休" },
+                        ]}
+                        {...field}
+                        error={errors.type?.message}
+                        mt="xs"
+                    />
+                )}
+            />
 
             <div>
                 <label
@@ -54,46 +51,36 @@ const RecordForm = () => {
                 )}
             </div>
 
-            <div>
-                <Controller
-                    name="hours"
-                    control={control}
-                    render={({ field }) => (
-                        <NumberInput
-                            id="hours"
-                            label="時數"
-                            placeholder="請輸入時數"
-                            step={0.5}
-                            min={0.5}
-                            decimalScale={1}
-                            {...field}
-                            error={errors.hours?.message}
-                            mt="xs"
-                        />
-                    )}
-                />
-            </div>
+            <Controller
+                name="hours"
+                control={control}
+                render={({ field }) => (
+                    <NumberInput
+                        id="hours"
+                        label="時數"
+                        placeholder="請輸入時數"
+                        step={0.5}
+                        min={0.5}
+                        decimalScale={1}
+                        {...field}
+                        error={errors.hours?.message}
+                        mt="xs"
+                    />
+                )}
+            />
 
-            <div>
-                <Textarea
-                    id="reason"
-                    {...register("reason")}
-                    rows={3}
-                    label="事由"
-                    error={errors.reason?.message}
-                    className="mt-1 block w-full"
-                />
-            </div>
+            <Textarea
+                id="reason"
+                {...register("reason")}
+                rows={3}
+                label="事由"
+                error={errors.reason?.message}
+                className="mt-1 block w-full"
+            />
 
-            <div>
-                <Button
-                    type="submit"
-                    disabled={mutation.isPending} // 若正在提交則禁用按鈕
-                >
-                    {mutation.isPending ? "提交中..." : "提交"}{" "}
-                    {/* 根據提交狀態顯示不同文字 */}
-                </Button>
-            </div>
+            <Button type="submit" disabled={mutation.isPending}>
+                {mutation.isPending ? "提交中..." : "提交"}{" "}
+            </Button>
         </form>
     );
 };
