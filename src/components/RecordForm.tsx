@@ -1,4 +1,5 @@
 import { Button, NumberInput, Select, Textarea } from "@mantine/core";
+import { DatePickerInput } from "@mantine/dates"; // Changed from DateInput
 import { Controller } from "react-hook-form";
 
 import useCreateRecord from "../hook/useCreateRecord";
@@ -31,25 +32,21 @@ const RecordForm = () => {
                 )}
             />
 
-            <div>
-                <label
-                    htmlFor="date"
-                    className="block text-sm font-medium text-gray-700"
-                >
-                    日期
-                </label>
-                <input
-                    type="date"
-                    id="date"
-                    {...register("date")}
-                    className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
-                />
-                {errors.date && (
-                    <p className="mt-2 text-sm text-red-600">
-                        {errors.date.message}
-                    </p>
+            <Controller
+                name="date"
+                control={control}
+                render={({ field }) => (
+                    <DatePickerInput
+                        id="date"
+                        label="日期"
+                        placeholder="請選擇日期"
+                        {...field} // Spread field to pass value, onChange, etc.
+                        error={errors.date?.message}
+                        mt="xs"
+                        className="w-full" // Maintain full width
+                    />
                 )}
-            </div>
+            />
 
             <Controller
                 name="hours"
