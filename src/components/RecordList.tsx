@@ -1,3 +1,4 @@
+import { zodResolver } from "@hookform/resolvers/zod";
 import {
     ActionIcon,
     Badge,
@@ -5,23 +6,54 @@ import {
     Card,
     Dialog,
     Group,
+    Modal,
+    NumberInput,
+    Select,
     Skeleton,
     Stack,
     Text,
+    Textarea,
 } from "@mantine/core";
-import { Clock, NotePencil, Trash } from "@phosphor-icons/react";
+import { DatePickerInput } from "@mantine/dates";
+import { Clock, NotePencil, PencilSimple, Trash } from "@phosphor-icons/react";
 import { useState } from "react";
+import { Controller, useForm } from "react-hook-form";
+import { z } from "zod";
 
 import useAuth from "../hook/useAuth";
 import useDeleteRecordMutation from "../hook/useDeleteRecordMutation";
 import useRecordsQuery from "../hook/useRecordQuery";
+import { RecordItem } from "../hook/useRecordQuery";
+import useUpdateRecordMutation from "../hook/useUpdateRecordMutation";
+
+const recordSchema = z.object({
+    type: z.enum(["overtime", "compensate"]),
+    date: z.string().min(1, "日期為必填"),
+    hours: z.number().positive("時數必須為正數"),
+    reason: z.string().min(1, "事由為必填"),
+});
+
+type RecordFormData = z.infer<typeof recordSchema>;
 
 const RecordList = () => {
     const { data, isLoading, isError } = useRecordsQuery();
     const { role } = useAuth();
     const deleteRecord = useDeleteRecordMutation();
+    const updateRecord = useUpdateRecordMutation();
     const [dialogOpen, setDialogOpen] = useState(false);
     const [recordToDelete, setRecordToDelete] = useState<string | null>(null);
+    const [editModalOpen, setEditModalOpen] = useState(false);
+    const [recordToEdit, setRecordToEdit] = useState<RecordItem | null>(null);
+
+    const {
+        register,
+        handleSubmit,
+        control,
+        reset,
+        formState: { errors },
+    } = useForm<RecordFormData>({
+        resolver: zodResolver(recordSchema),
+    });
 
     const isEditor = role === "editor";
 
@@ -30,11 +62,41 @@ const RecordList = () => {
         setDialogOpen(true);
     };
 
+    const handleEditClick = (record: RecordItem) => {
+        setRecordToEdit(record);
+        reset({
+            type: record.type,
+            date: record.date,
+            hours: record.hours,
+            reason: record.reason,
+        });
+        setEditModalOpen(true);
+    };
+
     const handleConfirmDelete = () => {
         if (recordToDelete) {
             deleteRecord.mutate(recordToDelete);
             setDialogOpen(false);
             setRecordToDelete(null);
+        }
+    };
+
+    const onSubmitEdit = (data: RecordFormData) => {
+        if (recordToEdit) {
+            updateRecord.mutate(
+                {
+                    id: recordToEdit.id,
+                    data: {
+                        ...data,
+                    },
+                },
+                {
+                    onSuccess: () => {
+                        setEditModalOpen(false);
+                        setRecordToEdit(null);
+                    },
+                },
+            );
         }
     };
 
@@ -63,16 +125,28 @@ const RecordList = () => {
                                     {record.date}
                                 </Text>
                                 {isEditor && (
-                                    <ActionIcon
-                                        color="red"
-                                        variant="subtle"
-                                        onClick={() =>
-                                            handleDeleteClick(record.id)
-                                        }
-                                        aria-label="刪除記錄"
-                                    >
-                                        <Trash size={16} />
-                                    </ActionIcon>
+                                    <>
+                                        <ActionIcon
+                                            color="blue"
+                                            variant="subtle"
+                                            onClick={() =>
+                                                handleEditClick(record)
+                                            }
+                                            aria-label="編輯記錄"
+                                        >
+                                            <PencilSimple size={16} />
+                                        </ActionIcon>
+                                        <ActionIcon
+                                            color="red"
+                                            variant="subtle"
+                                            onClick={() =>
+                                                handleDeleteClick(record.id)
+                                            }
+                                            aria-label="刪除記錄"
+                                        >
+                                            <Trash size={16} />
+                                        </ActionIcon>
+                                    </>
                                 )}
                             </Group>
                         </Group>
@@ -92,6 +166,7 @@ const RecordList = () => {
                 ))}
             </Stack>
 
+            {/* 刪除確認對話框 */}
             <Dialog
                 opened={dialogOpen}
                 withCloseButton
@@ -125,6 +200,99 @@ const RecordList = () => {
                     </Button>
                 </Group>
             </Dialog>
+
+            {/* 編輯記錄對話框 */}
+            <Modal
+                opened={editModalOpen}
+                onClose={() => {
+                    setEditModalOpen(false);
+                    setRecordToEdit(null);
+                }}
+                title="編輯記錄"
+                centered
+            >
+                <form
+                    onSubmit={handleSubmit(onSubmitEdit)}
+                    className="space-y-4"
+                >
+                    <Controller
+                        name="type"
+                        control={control}
+                        render={({ field }) => (
+                            <Select
+                                id="type"
+                                label="類型"
+                                placeholder="請選擇類型"
+                                data={[
+                                    { value: "overtime", label: "加班" },
+                                    { value: "compensate", label: "補休" },
+                                ]}
+                                {...field}
+                                error={errors.type?.message}
+                                mt="xs"
+                            />
+                        )}
+                    />
+
+                    <Controller
+                        name="date"
+                        control={control}
+                        render={({ field }) => (
+                            <DatePickerInput
+                                id="date"
+                                label="日期"
+                                placeholder="請選擇日期"
+                                {...field}
+                                error={errors.date?.message}
+                                mt="xs"
+                                className="w-full"
+                            />
+                        )}
+                    />
+
+                    <Controller
+                        name="hours"
+                        control={control}
+                        render={({ field }) => (
+                            <NumberInput
+                                id="hours"
+                                label="時數"
+                                placeholder="請輸入時數"
+                                step={0.5}
+                                min={0.5}
+                                decimalScale={1}
+                                {...field}
+                                error={errors.hours?.message}
+                                mt="xs"
+                            />
+                        )}
+                    />
+
+                    <Textarea
+                        id="reason"
+                        {...register("reason")}
+                        rows={3}
+                        label="事由"
+                        error={errors.reason?.message}
+                        className="mt-1 block w-full"
+                    />
+
+                    <Group justify="flex-end" mt="md">
+                        <Button
+                            variant="outline"
+                            onClick={() => {
+                                setEditModalOpen(false);
+                                setRecordToEdit(null);
+                            }}
+                        >
+                            取消
+                        </Button>
+                        <Button type="submit" loading={updateRecord.isPending}>
+                            {updateRecord.isPending ? "更新中..." : "更新"}
+                        </Button>
+                    </Group>
+                </form>
+            </Modal>
         </>
     );
 };
