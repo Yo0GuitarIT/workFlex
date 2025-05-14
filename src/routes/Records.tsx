@@ -4,7 +4,7 @@ import { useNavigate } from "react-router";
 
 import RecordForm from "../components/RecordForm";
 import RecordList from "../components/RecordList";
-import useAuth from "../hook/useAuth";
+import useAuth from "../hooks/useAuth";
 import { auth } from "../lib/firebase";
 
 const Records = () => {
@@ -30,7 +30,7 @@ const Records = () => {
             {!isEditor && <p>你是瀏覽者，只能看紀錄</p>}
             <RecordList />
             <RecordForm />
-           
+
             <Button onClick={handleDashboard}>dashboard</Button>
             <Button onClick={handleLogout}>登出</Button>
         </div>

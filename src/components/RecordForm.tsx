@@ -2,7 +2,7 @@ import { Button, NumberInput, Select, Textarea } from "@mantine/core";
 import { DatePickerInput } from "@mantine/dates"; // Changed from DateInput
 import { Controller } from "react-hook-form";
 
-import useCreateRecord from "../hook/useCreateRecord";
+import useCreateRecord from "../hooks/useCreateRecord";
 
 // 紀錄表單元件
 const RecordForm = () => {

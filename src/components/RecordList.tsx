@@ -20,11 +20,11 @@ import { useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { z } from "zod";
 
-import useAuth from "../hook/useAuth";
-import useDeleteRecordMutation from "../hook/useDeleteRecordMutation";
-import useRecordsQuery from "../hook/useRecordQuery";
-import { RecordItem } from "../hook/useRecordQuery";
-import useUpdateRecordMutation from "../hook/useUpdateRecordMutation";
+import useAuth from "../hooks/useAuth";
+import useDeleteRecordMutation from "../hooks/useDeleteRecordMutation";
+import useRecordsQuery from "../hooks/useRecordQuery";
+import { RecordItem } from "../hooks/useRecordQuery";
+import useUpdateRecordMutation from "../hooks/useUpdateRecordMutation";
 
 const recordSchema = z.object({
     type: z.enum(["overtime", "compensate"]),
