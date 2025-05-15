@@ -100,7 +100,13 @@ const EditModal = ({
     };
 
     return (
-        <Modal opened={opened} onClose={onClose} title="編輯記錄" centered>
+        <Modal
+            opened={opened}
+            onClose={onClose}
+            title="編輯記錄"
+            centered
+            withCloseButton={false}
+        >
             <form onSubmit={handleSubmit(onSubmitEdit)} className="space-y-4">
                 <Controller
                     name="type"
