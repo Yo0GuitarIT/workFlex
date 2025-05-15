@@ -4,6 +4,7 @@ import {
     deleteDoc,
     doc,
     serverTimestamp,
+    updateDoc,
 } from "firebase/firestore";
 
 import { db } from "./firebase";
@@ -30,4 +31,9 @@ const deleteRecord = async (recordId: string) => {
     await deleteDoc(doc(db, "records", recordId));
 };
 
-export { addRecord, deleteRecord };
+// 更新 Firestore 中的紀錄
+const updateRecord = async (recordId: string, data: Partial<RecordType>) => {
+    await updateDoc(doc(db, "records", recordId), data);
+};
+
+export { addRecord, deleteRecord, updateRecord };
