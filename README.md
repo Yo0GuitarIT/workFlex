@@ -1,21 +1,21 @@
 # WorkFlex App 🚀
 
-This project is a web application built to help manage work flexibility, such as tracking overtime and compensation time.
+This project is a web application built to help manage work flexibility, such as tracking overtime and compensation time. It provides a user-friendly interface for employees to log overtime hours and managers to approve compensation leave.
 
 ## 🛠️ Technology Stack
 
-- ⚡ **Vite**
-- ⚛️ **React 19**
-- 🔷 **TypeScript**
-- 🎨 **Tailwind CSS v4**
-- 🔥 **Firebase v11** (Authentication & Firestore)
-- 🔄 **React Router v7**
-- 📋 **React Hook Form**
-- 🛡️ **Zod** (Form validation)
-- 🔄 **TanStack Query v5** (Data fetching)
-- 🎭 **Mantine UI v8** (UI components & notifications)
-- 🎨 **Phosphor Icons** (Modern icon set)
-- ⚙️ **ESLint & Prettier**
+- ⚡ **Vite** - Fast frontend build tool optimized for development
+- ⚛️ **React 19** - Latest React with concurrent features and improved performance
+- 🔷 **TypeScript** - Type safety for robust code
+- 🎨 **Tailwind CSS v4** - Utility-first CSS framework with the latest features
+- 🔥 **Firebase v11** (Authentication & Firestore) - Backend-as-a-service for auth and data
+- 🔄 **React Router v7** - Declarative routing for React applications
+- 📋 **React Hook Form** - Performant form management with less re-renders
+- 🛡️ **Zod** (Form validation) - TypeScript-first schema validation
+- 🔄 **TanStack Query v5** (Data fetching) - Powerful data synchronization for React
+- 🎭 **Mantine UI v8** (UI components & notifications) - Modern React UI library
+- 🎨 **Phosphor Icons** (Modern icon set) - Flexible icon family for interfaces
+- ⚙️ **ESLint & Prettier** - Code quality and formatting tools
 
 ## ✨ Features
 
@@ -28,9 +28,12 @@ This project is a web application built to help manage work flexibility, such as
     - 📊 View all records with type indication, hours, and reasons.
     - 🔄 Real-time updates with React Query.
 - 🖥️ **Dashboard**: Main landing page after login with role-specific information.
+    - 📊 Statistics display showing overtime, used leave, and available leave hours.
+    - 🎨 Color-coded indicators for available hours status (positive, negative, or zero).
 - 📈 **Records Page**: Displays records and allows editors to manage them.
 - 🛡️ **Protected Routes**: Ensures only authenticated users can access certain pages.
 - 🔔 **Notifications**: User-friendly success and error notifications.
+- 🛑 **Error Handling**: Component-level error states with retry options.
 - 🤷 **Not Found Page**: Handles invalid routes gracefully.
 
 ## 🚧 Development Progress
@@ -45,9 +48,12 @@ This project is a web application built to help manage work flexibility, such as
 - ✅ **Record Form**: Form fully implemented with Zod validation and React Hook Form.
 - ✅ **Displaying Records**: Records are successfully fetched and displayed with proper loading states.
 - ✅ **Notifications**: Success and error notifications are implemented using Mantine Notifications.
-- ⏳ **Editing/Deleting Records**: Functionality for editors to modify or remove records is pending.
-- ⏳ **Comprehensive Error Handling**: More robust global error handling needs implementation.
+- ✅ **Basic Error Handling**: Component-level error states have been implemented for data fetching operations.
+- ✅ **Dashboard Statistics**: Overtime hours summary with loading and error states is implemented.
+- ⏳ **Editing/Deleting Records**: Functionality for editors to modify or remove records is in progress.
+- ⏳ **Comprehensive Error Handling**: Implementation of ErrorBoundary components and global error handling system is planned.
 - ⏳ **Unit/Integration Tests**: Not yet implemented.
+- ⏳ **Data Export**: Functionality to export records to CSV or PDF format is planned.
 
 ## 🚀 Getting Started
 
@@ -94,3 +100,12 @@ This project is a web application built to help manage work flexibility, such as
 - `npm run build`: Builds the app for production.
 - `npm run lint`: Lints the codebase.
 - `npm run preview`: Serves the production build locally.
+
+## 🧠 Future Enhancements
+
+- 📱 **Mobile Responsive Design**: Optimize the user interface for mobile devices.
+- 🔒 **Enhanced Authentication**: Add email/password authentication option alongside Google login.
+- 📊 **Advanced Statistics**: Provide more detailed analytics and reporting features.
+- 📅 **Calendar Integration**: Visual calendar view for tracking overtime and leave days.
+- 🌙 **Dark Mode**: Toggle between light and dark themes for better user experience.
+- 🔔 **Notifications**: Email notifications for pending approvals and status changes.
