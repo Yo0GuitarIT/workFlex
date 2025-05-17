@@ -1,7 +1,8 @@
 import { signOut } from "firebase/auth";
 import { useNavigate } from "react-router";
 
-import useAuth from "../hook/useAuth";
+import OvertimeSummary from "../components/OvertimeSummary";
+import useAuth from "../hooks/useAuth";
 import { auth } from "../lib/firebase";
 
 function Dashboard() {
@@ -37,6 +38,10 @@ function Dashboard() {
 
             {isEditor && <p>你是編輯者，可以在 record 頁面紀錄</p>}
             {!isEditor && <p>你是瀏覽者，只能看紀錄</p>}
+
+            <div className="mt-8">
+                <OvertimeSummary />
+            </div>
         </div>
     );
 }
