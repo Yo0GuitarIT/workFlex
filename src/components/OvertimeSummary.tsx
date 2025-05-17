@@ -1,7 +1,8 @@
 import { Card, Group, Skeleton, Text, Badge } from "@mantine/core";
 import { Clock, CalendarCheck, CalendarX } from "@phosphor-icons/react";
 
-import useTotalOvertimeHours from "../hook/useTotalOvertimeHours";
+import useTotalOvertimeHours from "../hooks/useTotalOvertimeHours";
+
 
 /**
  * 加班時數概要組件
