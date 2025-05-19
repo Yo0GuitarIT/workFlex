@@ -1,5 +1,6 @@
 import js from "@eslint/js";
 import globals from "globals";
+import reactPlugin from "eslint-plugin-react";
 import reactHooks from "eslint-plugin-react-hooks";
 import reactRefresh from "eslint-plugin-react-refresh";
 import tseslint from "typescript-eslint";
@@ -15,6 +16,7 @@ export default tseslint.config(
             globals: globals.browser,
         },
         plugins: {
+            react: reactPlugin,
             "react-hooks": reactHooks,
             "react-refresh": reactRefresh,
             import: importPlugin,
@@ -44,6 +46,17 @@ export default tseslint.config(
                 },
             ],
             "import/newline-after-import": "warn",
+            // React props 排序規則
+            "react/jsx-sort-props": [
+                "warn",
+                {
+                    callbacksLast: true, // 回調函數放在最後
+                    shorthandFirst: true, // 短語法屬性放在前面 (例如: disabled 而非 disabled={true})
+                    multiline: "last", // 多行屬性放在最後
+                    ignoreCase: true, // 忽略大小寫
+                    reservedFirst: ["key", "ref"], // 保留字段放在最前面
+                }
+            ],
         },
     },
 );
