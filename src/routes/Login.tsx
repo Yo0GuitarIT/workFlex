@@ -1,3 +1,4 @@
+import { Button, Title } from "@mantine/core";
 import { signInWithPopup, signOut } from "firebase/auth";
 import { useLocation, useNavigate } from "react-router";
 
@@ -9,8 +10,8 @@ function Login() {
     const navigate = useNavigate();
     const location = useLocation();
 
-     // 如果有來自 ProtectedRoute 的 `state.from`，則使用它，否則預設導向 "/"
-     const from = location.state?.from?.pathname || "/";
+    // 如果有來自 ProtectedRoute 的 `state.from`，則使用它，否則預設導向 "/"
+    const from = location.state?.from?.pathname || "/";
 
     const handleLogin = async () => {
         try {
@@ -30,13 +31,9 @@ function Login() {
     };
 
     return (
-        <div className="flex min-h-screen items-center justify-center">
-            <button
-                onClick={handleLogin}
-                className="rounded-xl bg-blue-500 px-4 py-2 text-white shadow-md hover:bg-blue-600"
-            >
-                使用 Google 登入
-            </button>
+        <div className="flex gap-6 h-screen w-screen flex-col items-center justify-center">
+            <Title>屏東縣小編打卡系統</Title>
+            <Button onClick={handleLogin}>使用 Google 登入</Button>
         </div>
     );
 }
