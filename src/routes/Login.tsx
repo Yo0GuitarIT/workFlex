@@ -1,4 +1,5 @@
 import { Button, Title } from "@mantine/core";
+import { SignInIcon } from "@phosphor-icons/react";
 import { signInWithPopup, signOut } from "firebase/auth";
 import { useLocation, useNavigate } from "react-router";
 
@@ -6,7 +7,7 @@ import { auth, provider } from "../lib/firebase";
 
 const whitelist = import.meta.env.VITE_APP_EMAIL_WHITELIST?.split(",") || [];
 
-function Login() {
+const Login = () => {
     const navigate = useNavigate();
     const location = useLocation();
 
@@ -31,11 +32,16 @@ function Login() {
     };
 
     return (
-        <div className="flex gap-6 h-screen w-screen flex-col items-center justify-center">
+        <div className="flex h-screen w-screen flex-col items-center justify-center gap-6 bg-gray-100">
             <Title>屏東縣小編打卡系統</Title>
-            <Button onClick={handleLogin}>使用 Google 登入</Button>
+            <Button
+                rightSection={<SignInIcon size={16} />}
+                onClick={handleLogin}
+            >
+                Google 登入
+            </Button>
         </div>
     );
-}
+};
 
 export default Login;
