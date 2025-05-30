@@ -1,26 +1,13 @@
-import { Button } from "@mantine/core";
-import { signOut } from "firebase/auth";
-import { useNavigate } from "react-router";
-
 import RecordForm from "../components/RecordForm";
 import RecordList from "../components/RecordList";
 import useAuth from "../hooks/useAuth";
-import { auth } from "../lib/firebase";
 
 const Records = () => {
     const { role } = useAuth();
-    const navigate = useNavigate();
 
     const isEditor = role === "editor";
 
-    const handleDashboard = () => {
-        navigate("/");
-    };
-
-    const handleLogout = async () => {
-        await signOut(auth);
-        navigate("/login");
-    };
+   
 
     return (
         <div className="p-8">
@@ -30,9 +17,6 @@ const Records = () => {
             {!isEditor && <p>你是瀏覽者，只能看紀錄</p>}
             <RecordList />
             <RecordForm />
-
-            <Button onClick={handleDashboard}>dashboard</Button>
-            <Button onClick={handleLogout}>登出</Button>
         </div>
     );
 };

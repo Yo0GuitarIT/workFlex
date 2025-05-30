@@ -5,6 +5,7 @@ import { StrictMode, Suspense, lazy } from "react";
 import { createRoot } from "react-dom/client";
 import { createBrowserRouter, RouterProvider } from "react-router";
 
+import Layout from "./components/Navbar/Layout.tsx";
 import ProtectedRoute from "./components/ProtectedRoute";
 import AuthProvider from "./context/ AuthProvider.tsx";
 
@@ -21,9 +22,11 @@ const router = createBrowserRouter([
         path: "/",
         element: (
             <ProtectedRoute>
-                <Suspense fallback={<div className="p-8">載入中...</div>}>
-                    <Dashboard />
-                </Suspense>
+                <Layout>
+                    <Suspense fallback={<div className="p-8">載入中...</div>}>
+                        <Dashboard />
+                    </Suspense>
+                </Layout>
             </ProtectedRoute>
         ),
     },
@@ -39,18 +42,22 @@ const router = createBrowserRouter([
         path: "/record",
         element: (
             <ProtectedRoute>
-                <Suspense fallback={<div className="p-8">載入中...</div>}>
-                    <Records />
-                </Suspense>
+                <Layout>
+                    <Suspense fallback={<div className="p-8">載入中...</div>}>
+                        <Records />
+                    </Suspense>
+                </Layout>
             </ProtectedRoute>
         ),
     },
     {
         path: "*",
         element: (
-            <Suspense fallback={<div className="p-8">載入中...</div>}>
-                <NotFound />
-            </Suspense>
+            <Layout>
+                <Suspense fallback={<div className="p-8">載入中...</div>}>
+                    <NotFound />
+                </Suspense>
+            </Layout>
         ),
     },
 ]);
