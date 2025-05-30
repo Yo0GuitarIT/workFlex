@@ -14,20 +14,20 @@ const DeleteConfirmModal = ({
     return (
         <Modal
             opened={opened}
-            onClose={onClose}
-            size="lg"
             radius="md"
+            size="lg"
             title={"確認刪除"}
             withCloseButton = {false}
+            onClose={onClose}
         >
-            <Text size="sm" c="dimmed" mb="lg">
+            <Text c="dimmed" mb="lg" size="sm">
                 確定要刪除這筆紀錄嗎？此操作無法復原。
             </Text>
             <Group justify="flex-end">
-                <Button variant="outline" onClick={onClose} size="xs">
+                <Button size="xs" variant="outline" onClick={onClose}>
                     取消
                 </Button>
-                <Button color="red" onClick={onConfirm} size="xs">
+                <Button color="red" size="xs" onClick={onConfirm}>
                     刪除
                 </Button>
             </Group>

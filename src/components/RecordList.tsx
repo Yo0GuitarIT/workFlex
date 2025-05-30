@@ -7,7 +7,12 @@ import {
     Stack,
     Text,
 } from "@mantine/core";
-import { Clock, NotePencil, PencilSimple, Trash } from "@phosphor-icons/react";
+import {
+    ClockIcon,
+    NotePencilIcon,
+    PencilSimpleIcon,
+    TrashIcon,
+} from "@phosphor-icons/react";
 import { useState } from "react";
 
 import useAuth from "../hooks/useAuth";
@@ -55,45 +60,45 @@ const RecordList = () => {
         return <Text c="dimmed">目前沒有任何紀錄。</Text>;
     return (
         <>
-            <Stack mt="xl" gap="md">
+            <Stack gap="md" mt="xl">
                 {data.map((record) => (
-                    <Card key={record.id} shadow="sm" radius="md" withBorder>
-                        <Group justify="space-between" align="flex-start">
+                    <Card key={record.id} withBorder radius="md" shadow="sm">
+                        <Group align="flex-start" justify="space-between">
                             <Badge
+                                variant="light"
                                 color={
                                     record.type === "overtime"
                                         ? "blue"
                                         : "green"
                                 }
-                                variant="light"
                             >
                                 {record.type === "overtime" ? "加班" : "補休"}
                             </Badge>
                             <Group>
-                                <Text size="xs" c="dimmed">
+                                <Text c="dimmed" size="xs">
                                     {record.date}
                                 </Text>
                                 {isEditor && (
                                     <>
                                         <ActionIcon
+                                            aria-label="編輯記錄"
                                             color="blue"
                                             variant="subtle"
                                             onClick={() =>
                                                 handleEditClick(record)
                                             }
-                                            aria-label="編輯記錄"
                                         >
-                                            <PencilSimple size={16} />
+                                            <PencilSimpleIcon size={16} />
                                         </ActionIcon>
                                         <ActionIcon
+                                            aria-label="刪除記錄"
                                             color="red"
                                             variant="subtle"
                                             onClick={() =>
                                                 handleDeleteClick(record.id)
                                             }
-                                            aria-label="刪除記錄"
                                         >
-                                            <Trash size={16} />
+                                            <TrashIcon size={16} />
                                         </ActionIcon>
                                     </>
                                 )}
@@ -101,13 +106,13 @@ const RecordList = () => {
                         </Group>
 
                         <Group align="center" mt="xs">
-                            <Clock size={16} />
+                            <ClockIcon size={16} />
                             <Text size="sm">時數：{record.hours} 小時</Text>
                         </Group>
 
                         <Group align="center" mt="xs">
-                            <NotePencil size={16} />
-                            <Text size="sm" c="gray">
+                            <NotePencilIcon size={16} />
+                            <Text c="gray" size="sm">
                                 {record.reason}
                             </Text>
                         </Group>
@@ -118,22 +123,22 @@ const RecordList = () => {
             {/* 刪除確認對話框 */}
             <DeleteConfirmModal
                 opened={deleteModalOpen}
+                onConfirm={handleConfirmDelete}
                 onClose={() => {
                     setDeleteModalOpen(false);
                     setRecordToDelete(null);
                 }}
-                onConfirm={handleConfirmDelete}
             />
 
             {/* 編輯記錄對話框 */}
             <EditModal
                 opened={editModalOpen}
+                recordToEdit={recordToEdit}
+                updateRecord={updateRecord}
                 onClose={() => {
                     setEditModalOpen(false);
                     setRecordToEdit(null);
                 }}
-                recordToEdit={recordToEdit}
-                updateRecord={updateRecord}
             />
         </>
     );
