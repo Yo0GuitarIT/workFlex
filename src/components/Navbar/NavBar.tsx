@@ -53,10 +53,10 @@ const Navbar = () => {
 
                     {/* 右側：漢堡選單按鈕 */}
                     <ActionIcon
-                        onClick={() => setDrawerOpen(true)}
-                        variant="subtle"
-                        size="lg"
                         className="hover:bg-gray-100"
+                        size="lg"
+                        variant="subtle"
+                        onClick={() => setDrawerOpen(true)}
                     >
                         <ListIcon size={20} />
                     </ActionIcon>
@@ -66,23 +66,23 @@ const Navbar = () => {
             {/* 側邊抽屜 */}
             <Drawer
                 opened={drawerOpen}
-                onClose={() => setDrawerOpen(false)}
+                padding="md"
+                position="right"
+                size="xs"
                 title={
-                    <Title order={4} className="text-gray-800">
+                    <Title className="text-gray-800" order={4}>
                         選單
                     </Title>
                 }
-                position="right"
-                size="xs"
-                padding="md"
+                onClose={() => setDrawerOpen(false)}
             >
                 <Stack gap="md">
                     {/* 用戶資訊 */}
                     <div className="rounded-lg bg-gray-50 p-3">
-                        <Text size="sm" fw={500} className="text-gray-800">
+                        <Text className="text-gray-800" fw={500} size="sm">
                             {user.displayName}
                         </Text>
-                        <Text size="xs" className="text-gray-600">
+                        <Text className="text-gray-600" size="xs">
                             {role === "editor" ? "編輯者" : "瀏覽者"}
                         </Text>
                     </div>
@@ -92,20 +92,20 @@ const Navbar = () => {
                     {/* 導航按鈕 */}
                     <Stack gap="xs">
                         <Button
-                            variant={isActive("/") ? "filled" : "subtle"}
-                            leftSection={<HouseIcon size={16} />}
-                            onClick={() => handleNavigation("/")}
                             fullWidth
                             justify="start"
+                            leftSection={<HouseIcon size={16} />}
+                            variant={isActive("/") ? "filled" : "subtle"}
+                            onClick={() => handleNavigation("/")}
                         >
                             儀表板
                         </Button>
                         <Button
-                            variant={isActive("/record") ? "filled" : "subtle"}
-                            leftSection={<ClipboardTextIcon size={16} />}
-                            onClick={() => handleNavigation("/record")}
                             fullWidth
                             justify="start"
+                            leftSection={<ClipboardTextIcon size={16} />}
+                            variant={isActive("/record") ? "filled" : "subtle"}
+                            onClick={() => handleNavigation("/record")}
                         >
                             紀錄管理
                         </Button>
@@ -115,12 +115,12 @@ const Navbar = () => {
 
                     {/* 登出按鈕 */}
                     <Button
-                        variant="outline"
-                        color="red"
-                        leftSection={<SignOutIcon size={16} />}
-                        onClick={handleLogout}
                         fullWidth
+                        color="red"
                         justify="start"
+                        leftSection={<SignOutIcon size={16} />}
+                        variant="outline"
+                        onClick={handleLogout}
                     >
                         登出
                     </Button>

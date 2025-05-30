@@ -21,8 +21,8 @@ const OvertimeSummary = () => {
     if (isError) return <Text c="red">載入時數統計失敗，請稍後再試。</Text>;
 
     return (
-        <Card shadow="sm" p="lg" radius="md" withBorder>
-            <Text fw={700} size="lg" mb="md">
+        <Card withBorder p="lg" radius="md" shadow="sm">
+            <Text fw={700} mb="md" size="lg">
                 加班時數統計
             </Text>
 
@@ -41,6 +41,7 @@ const OvertimeSummary = () => {
                 <Text>
                     可休假時數：
                     <Badge
+                        size="lg"
                         color={
                             availableLeaveHours > 0
                                 ? "green"
@@ -48,7 +49,6 @@ const OvertimeSummary = () => {
                                   ? "red"
                                   : "gray"
                         }
-                        size="lg"
                     >
                         {availableLeaveHours} 小時
                     </Badge>

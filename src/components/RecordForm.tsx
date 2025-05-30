@@ -10,12 +10,12 @@ const RecordForm = () => {
         useCreateRecord();
 
     return (
-        <form onSubmit={handleSubmit(onSubmit)} className="mt-8 space-y-6">
+        <form className="mt-8 space-y-6" onSubmit={handleSubmit(onSubmit)}>
             <h1 className="text-xl font-semibold">新增紀錄</h1>
 
             <Controller
-                name="type"
                 control={control}
+                name="type"
                 render={({ field }) => (
                     <Select
                         id="type"
@@ -33,32 +33,32 @@ const RecordForm = () => {
             />
 
             <Controller
-                name="date"
                 control={control}
+                name="date"
                 render={({ field }) => (
                     <DatePickerInput
                         id="date"
                         label="日期"
                         placeholder="請選擇日期"
                         {...field} // Spread field to pass value, onChange, etc.
+                        className="w-full" // Maintain full width
                         error={errors.date?.message}
                         mt="xs"
-                        className="w-full" // Maintain full width
                     />
                 )}
             />
 
             <Controller
-                name="hours"
                 control={control}
+                name="hours"
                 render={({ field }) => (
                     <NumberInput
+                        decimalScale={1}
                         id="hours"
                         label="時數"
+                        min={0.5}
                         placeholder="請輸入時數"
                         step={0.5}
-                        min={0.5}
-                        decimalScale={1}
                         {...field}
                         error={errors.hours?.message}
                         mt="xs"
@@ -69,13 +69,13 @@ const RecordForm = () => {
             <Textarea
                 id="reason"
                 {...register("reason")}
-                rows={3}
-                label="事由"
-                error={errors.reason?.message}
                 className="mt-1 block w-full"
+                error={errors.reason?.message}
+                label="事由"
+                rows={3}
             />
 
-            <Button type="submit" disabled={mutation.isPending}>
+            <Button disabled={mutation.isPending} type="submit">
                 {mutation.isPending ? "提交中..." : "提交"}{" "}
             </Button>
         </form>
