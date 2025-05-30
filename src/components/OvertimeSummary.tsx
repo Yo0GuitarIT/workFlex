@@ -1,5 +1,5 @@
 import { Card, Group, Skeleton, Text, Badge } from "@mantine/core";
-import { Clock, CalendarCheck, CalendarX } from "@phosphor-icons/react";
+import { ClockIcon, CalendarCheckIcon, CalendarXIcon } from "@phosphor-icons/react";
 
 import useTotalOvertimeHours from "../hooks/useTotalOvertimeHours";
 
@@ -27,32 +27,30 @@ const OvertimeSummary = () => {
             </Text>
 
             <Group mb="xs">
-                <Clock size={20} weight="duotone" />
+                <ClockIcon size={20} weight="duotone" />
                 <Text>加班總時數：{totalOvertimeHours} 小時</Text>
             </Group>
 
             <Group mb="xs">
-                <CalendarCheck size={20} weight="duotone" />
+                <CalendarCheckIcon size={20} weight="duotone" />
                 <Text>已休假時數：{usedLeaveHours} 小時</Text>
             </Group>
 
             <Group>
-                <CalendarX size={20} weight="duotone" />
-                <Text>
-                    可休假時數：
-                    <Badge
-                        size="lg"
-                        color={
-                            availableLeaveHours > 0
-                                ? "green"
-                                : availableLeaveHours < 0
-                                  ? "red"
-                                  : "gray"
-                        }
-                    >
-                        {availableLeaveHours} 小時
-                    </Badge>
-                </Text>
+                <CalendarXIcon size={20} weight="duotone" />
+                <Text component="span">可休假時數：</Text>
+                <Badge
+                    size="lg"
+                    color={
+                        availableLeaveHours > 0
+                            ? "green"
+                            : availableLeaveHours < 0
+                              ? "red"
+                              : "gray"
+                    }
+                >
+                    {availableLeaveHours} 小時
+                </Badge>
             </Group>
         </Card>
     );

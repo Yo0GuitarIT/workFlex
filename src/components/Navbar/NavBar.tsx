@@ -4,7 +4,6 @@ import {
     Drawer,
     Stack,
     Text,
-    Title,
     Divider,
 } from "@mantine/core";
 import {
@@ -44,8 +43,8 @@ const Navbar = () => {
 
     return (
         <>
-            <header className="sticky top-0 z-50 h-16 border-b border-gray-200 bg-white px-4 shadow-sm">
-                <div className="mx-auto flex h-16 max-w-6xl items-center justify-between">
+            <header className="sticky top-0 z-50 h-16 border-b border-gray-200 bg-white px-8 shadow-sm">
+                <div className="mx-auto flex h-16 items-center justify-between">
                     {/* 左側：應用標題 */}
                     <Text className="text-lg font-bold text-gray-900">
                         WorkFlex 管理系統
@@ -69,11 +68,7 @@ const Navbar = () => {
                 padding="md"
                 position="right"
                 size="xs"
-                title={
-                    <Title className="text-gray-800" order={4}>
-                        選單
-                    </Title>
-                }
+                title="選單"
                 onClose={() => setDrawerOpen(false)}
             >
                 <Stack gap="md">
