@@ -26,8 +26,7 @@ const ProtectedRoute = ({
         );
     } else {
         // 不需要登入的路由（如 Login）：已登入時重定向到主頁面
-        const from = location.state?.from?.pathname || "/";
-        return user ? <Navigate replace to={from} /> : children;
+        return user ? <Navigate replace to="/" /> : children;
     }
 };
 
