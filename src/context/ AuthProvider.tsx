@@ -6,7 +6,6 @@ import { auth, db } from "../lib/firebase";
 
 import authContext from "./AuthContext";
 
-
 const AuthProvider = ({ children }: { children: ReactNode }) => {
     // 使用者資訊
     const [user, setUser] = useState<User | null>(null);
@@ -15,23 +14,40 @@ const AuthProvider = ({ children }: { children: ReactNode }) => {
     // 是否正在載入
     const [loading, setLoading] = useState(true);
 
+    // 獲取使用者角色的函數
+    const fetchUserRole = async (uid: string): Promise<"editor" | "viewer" | null> => {
+        try {
+            const docRef = doc(db, "users", uid);
+            const docSnap = await getDoc(docRef);
+
+            if (!docSnap.exists()) {
+                console.log("Document does not exist for user:", uid);
+                return null;
+            }
+
+            const userData = docSnap.data();
+            console.log("Document data:", userData);
+            return userData?.role as "editor" | "viewer" || null;
+        } catch (error) {
+            console.error("Error fetching user role:", error);
+            return null;
+        }
+    };
+
     useEffect(() => {
         const unsubscribe = onAuthStateChanged(auth, async (firebaseUser) => {
             setUser(firebaseUser);
 
-            // 如果使用者已登入，則從 Firestore 獲取角色
-            // 如果使用者未登入，則設置角色為 null
-            if (firebaseUser) {
-                const docRef = doc(db, "users", firebaseUser.uid);
-                const docSnap = await getDoc(docRef);
-                if (!docSnap.exists()) {
-                    setRole(null);
-                }
-                setRole(docSnap.data()?.role as "editor" | "viewer");
-            }else{
+            // 如果使用者未登入，直接設置角色為 null
+            if (!firebaseUser) {
                 setRole(null);
+                setLoading(false);
+                return;
             }
 
+            // 使用者已登入，從 Firestore 獲取角色
+            const userRole = await fetchUserRole(firebaseUser.uid);
+            setRole(userRole);
             setLoading(false);
         });
 
