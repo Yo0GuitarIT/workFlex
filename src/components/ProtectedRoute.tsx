@@ -3,19 +3,32 @@ import { Navigate, useLocation } from "react-router";
 
 import useAuth from "../hooks/useAuth.ts";
 
-const ProtectedRoute = ({ children }: { children: ReactNode }) => {
-    const { user, loading } = useAuth();
+interface ProtectedRouteProps {
+    children: ReactNode;
+    requireAuth?: boolean; // true: 需要登入才能訪問, false: 已登入時重定向
+}
 
-    // 使用 useLocation 來獲取當前路由位置
+const ProtectedRoute = ({
+    children,
+    requireAuth = true,
+}: ProtectedRouteProps) => {
+    const { user, loading } = useAuth();
     const location = useLocation();
 
-    if (loading) return <div>載入中...</div>;
+    if (loading) return <div className="p-8">載入中...</div>;
 
-    return user ? (
-        children
-    ) : (
-        <Navigate replace state={{ from: location }} to="/Login" />
-    );
+    if (requireAuth) {
+        // 需要登入的路由：未登入時重定向到 Login
+        return user ? (
+            children
+        ) : (
+            <Navigate replace state={{ from: location }} to="/login" />
+        );
+    } else {
+        // 不需要登入的路由（如 Login）：已登入時重定向到主頁面
+        const from = location.state?.from?.pathname || "/";
+        return user ? <Navigate replace to={from} /> : children;
+    }
 };
 
 export default ProtectedRoute;

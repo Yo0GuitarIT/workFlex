@@ -33,9 +33,11 @@ const router = createBrowserRouter([
     {
         path: "/login",
         element: (
-            <Suspense fallback={<div className="p-8">載入中...</div>}>
-                <Login />
-            </Suspense>
+            <ProtectedRoute requireAuth={false}>
+                <Suspense fallback={<div className="p-8">載入中...</div>}>
+                    <Login />
+                </Suspense>
+            </ProtectedRoute>
         ),
     },
     {
