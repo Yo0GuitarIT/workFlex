@@ -1,4 +1,4 @@
-import { onAuthStateChanged, User } from "firebase/auth";
+import { onAuthStateChanged, User, signOut } from "firebase/auth";
 import { doc, getDoc } from "firebase/firestore";
 import { ReactNode, useEffect, useState } from "react";
 
@@ -15,19 +15,20 @@ const AuthProvider = ({ children }: { children: ReactNode }) => {
     const [loading, setLoading] = useState(true);
 
     // 獲取使用者角色的函數
-    const fetchUserRole = async (uid: string): Promise<"editor" | "viewer" | null> => {
+    const fetchUserRole = async (
+        uid: string,
+    ): Promise<"editor" | "viewer" | null> => {
         try {
             const docRef = doc(db, "users", uid);
             const docSnap = await getDoc(docRef);
 
             if (!docSnap.exists()) {
-                console.log("Document does not exist for user:", uid);
+                console.log("用戶文檔不存在:", uid);
                 return null;
             }
 
             const userData = docSnap.data();
-            console.log("Document data:", userData);
-            return userData?.role as "editor" | "viewer" || null;
+            return (userData?.role as "editor" | "viewer") || null;
         } catch (error) {
             console.error("Error fetching user role:", error);
             return null;
@@ -45,7 +46,19 @@ const AuthProvider = ({ children }: { children: ReactNode }) => {
                 return;
             }
 
-            // 使用者已登入，從 Firestore 獲取角色
+            // 檢查白名單
+            const whitelist =
+                import.meta.env.VITE_APP_EMAIL_WHITELIST?.split(",") || [];
+            const email = firebaseUser.email;
+
+            if (!email || !whitelist.includes(email)) {
+                console.log("使用者不在白名單中:", email);
+                alert("你沒有權限登入");
+                await signOut(auth);
+                return;
+            }
+
+            // 使用者已登入且在白名單中，從 Firestore 獲取角色
             const userRole = await fetchUserRole(firebaseUser.uid);
             setRole(userRole);
             setLoading(false);
