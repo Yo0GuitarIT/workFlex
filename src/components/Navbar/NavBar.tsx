@@ -47,7 +47,7 @@ const Navbar = () => {
                 <div className="mx-auto flex h-16 items-center justify-between">
                     {/* 左側：應用標題 */}
                     <Text className="text-lg font-bold text-gray-900">
-                        WorkFlex 管理系統
+                        屏東縣小編打卡系統
                     </Text>
 
                     {/* 右側：漢堡選單按鈕 */}
