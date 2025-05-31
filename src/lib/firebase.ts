@@ -16,11 +16,4 @@ const app = initializeApp(firebaseConfig);
 
 export const auth = getAuth(app);
 export const provider = new GoogleAuthProvider();
-
-// 設置 Google Auth Provider 參數來改善移動設備兼容性
-provider.setCustomParameters({
-    prompt: "select_account",
-    // 強制使用帳號選擇器，避免快取問題
-});
-
 export const db = getFirestore(app);
