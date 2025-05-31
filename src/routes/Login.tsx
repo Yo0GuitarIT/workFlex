@@ -16,31 +16,6 @@ const Login = () => {
     // 如果有來自 ProtectedRoute 的 `state.from`，則使用它，否則預設導向 "/"
     const from = location.state?.from?.pathname || "/";
 
-    // 處理頁面加載時的 redirect 結果
-    useEffect(() => {
-        const checkRedirectResult = async () => {
-            try {
-                const result = await handleRedirectResult();
-                if (result) {
-                    const email = result.user.email;
-
-                    // 檢查 whitelist
-                    if (!email || !whitelist.includes(email)) {
-                        alert("你沒有權限登入");
-                        await signOut(auth);
-                        return;
-                    }
-
-                    navigate(from, { replace: true });
-                }
-            } catch (error) {
-                console.error("處理 redirect 結果錯誤:", error);
-            }
-        };
-
-        checkRedirectResult();
-    }, [navigate, from]);
-
     const handleLogin = async () => {
         try {
             // 使用新的統一登入方法
@@ -76,6 +51,31 @@ const Login = () => {
             }
         }
     };
+
+    // 處理頁面加載時的 redirect 結果
+    useEffect(() => {
+        const checkRedirectResult = async () => {
+            try {
+                const result = await handleRedirectResult();
+                if (result) {
+                    const email = result.user.email;
+
+                    // 檢查 whitelist
+                    if (!email || !whitelist.includes(email)) {
+                        alert("你沒有權限登入");
+                        await signOut(auth);
+                        return;
+                    }
+
+                    navigate(from, { replace: true });
+                }
+            } catch (error) {
+                console.error("處理 redirect 結果錯誤:", error);
+            }
+        };
+
+        checkRedirectResult();
+    }, [navigate, from]);
 
     return (
         <div className="flex h-screen w-screen flex-col items-center justify-center gap-6 bg-gray-100">
