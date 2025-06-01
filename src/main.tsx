@@ -7,7 +7,7 @@ import { createBrowserRouter, RouterProvider } from "react-router";
 
 import Layout from "./components/Navbar/Layout.tsx";
 import ProtectedRoute from "./components/ProtectedRoute";
-import AuthProvider from "./context/ AuthProvider.tsx";
+import AuthProvider from "./context/AuthProvider.tsx";
 
 // 使用懶加載導入路由組件
 const Dashboard = lazy(() => import("./routes/Dashboard.tsx"));
